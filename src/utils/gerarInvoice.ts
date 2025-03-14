@@ -122,61 +122,78 @@ export const gerarInvoice = () => {
       {
         style: 'tableMain',
         table: {
-          widths: [100, '*'],
+          widths: [100, '*', '*', '*'],	// mudar para 4 colunas
           body: [
             [
               { text: 'QUANTITY', style: 'tableHeader', alignment: 'center' },
-              { text: 'DESCRIPTION OF THE GOODS', style: 'tableHeader', alignment: 'center' },
+              {
+				text: 'DESCRIPTION OF THE GOODS',
+				colSpan: 3,
+				style: 'tableHeader',
+				alignment: 'center'
+			  },
+			  {},
+			  {},
             ],
             [
-              {
-                stack: [
-                  { text: bags },
-                  { text: 'SCS' },
-                  { text: 'IN' },
-                ],
-                style: 'tableData',
-                alignment: 'center',
-              },
-              {
-				stack: [
-					{ text: description, style: 'tableData', alignment: 'center' },
-					{ table: {
-						widths: ['*','*','*'],
-						body: [
-							[
-								{ text: 'TONS', alignment: 'center' },
-								{ text: 'PRICE', alignment: 'center' },
-								{ text: 'FOB VALUE (US$)', alignment: 'center' },
-							],
-							[
-								{ text: quantity, alignment: 'center'},
-								{ text: '306.23 USD/SCS', alignment: 'center'},
-								{ text: fobValue, alignment: 'center'},
-							]
-						]
-					  },
-					  layout: 'noBorders',
-					  margin: [0, 0, 0, 10]
-					},
-					{
-					  stack: [
-						{ text: 'BL: SSZ1543618' },
-						{ text: 'D/D: December 3, 2024'}
-					  ]
-					},
-					{
-					  stack: [
-						{ text: `GROSS WEIGHT: ${grossWeight}` },
-						{ text: `NET WEIGHT: ${netWeight}` },
-					  ]
-					}
-				],
+              {},
+			  { 
+				text: description,
+				colSpan: 3,
+				style: 'tableData',
+				alignment: 'center'
 			  },
+			  {},
+			  {},
             ],
+			[
+			  {
+				stack: [
+				  { text: bags },
+				  { text: 'SCS' },
+				  { text: 'IN' },
+				],
+				rowSpan: 2,
+				style: 'tableData',
+                alignment: 'center',
+			  },
+			  { text: 'TONS', alignment: 'center', border: [true,true,true,true] },
+			  { text: 'PRICE', alignment: 'center' },
+			  { text: 'FOB VALUE (US$)', alignment: 'center' },
+			],
+			[
+			  {},
+			  { text: quantity, alignment: 'center'},
+			  { text: '306.23 USD/SCS', alignment: 'center'},
+			  { text: fobValue, alignment: 'center'},
+			],
+			[
+			  {},
+			  {
+				stack: [
+				  { text: 'BL: SSZ1543618' },
+				  { text: 'D/D: December 3, 2024'}
+				],
+				colSpan: 3,
+			  },
+			  {},
+			  {},
+			],
+			[
+			  {},
+			  {
+				stack: [
+				  { text: `GROSS WEIGHT: ${grossWeight}` },
+				  { text: `NET WEIGHT: ${netWeight}` },
+				],
+				colSpan: 2,
+			  },
+			  {},
+			  {},
+			],
           ],
         },
-        layout: 'lightHorizontalLines',
+        layout: 'noBorders',
         margin: [0, 0, 0, 10],
       },
 
