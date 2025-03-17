@@ -36,6 +36,9 @@ export const gerarInvoice = () => {
     content: [
       // Cabeçalho principal
       {
+        image: 'public/tristao.png'
+      },
+      {
         text: 'TRISTÃO COMPANHIA DE COMÉRCIO EXTERIOR',
         style: 'headerTitle',
         alignment: 'center',
@@ -51,172 +54,186 @@ export const gerarInvoice = () => {
       {
         style: 'tableMain',
         table: {
-          widths: [120, 120, '*'],
+          widths: [120, '*', '*'],
           body: [
             [
-              { text: 'INVOICE NUMBER', style: 'tableHeader', alignment: 'center' },
-			  { text: 'INVOICE DATE', style: 'tableHeader', alignment: 'center' },
-              { text: 'AMOUNT', style: 'tableHeader', alignment: 'center' },
+              { text: 'INVOICE NUMBER', style: 'tableHeader', alignment: 'center', border: [true, true, true, true], }, // todas as bordas
+              { text: 'INVOICE DATE', style: 'tableHeader', alignment: 'center', border: [true, true, true, true], }, // todas as bordas
+              { text: 'AMOUNT', style: 'tableHeader', alignment: 'center', border: [true, true, true, true], }, // todas as bordas
             ],
             [
-			  { text: invoiceNumber, style: 'tableData', alignment: 'center' },
-			  {
-				stack: [
-					{ text: fromLocation },
-					{ text: invoiceDate },
-				],
-				style: 'tableData',
-				alignment: 'center'
-			  },
-			  { text: invoiceTotal, style: 'tableData', alignment: 'center' },
+              { text: invoiceNumber, style: 'tableData', alignment: 'center', border: [true, true, true, true], }, // todas as bordas
+              {
+                stack: [
+                  { text: fromLocation },
+                  { text: invoiceDate },
+                ],
+                style: 'tableData',
+                alignment: 'center',
+                border: [true, true, true, true],  // todas as bordas
+              },
+              { text: invoiceTotal, style: 'tableData', alignment: 'center', border: [true, true, true, true], },  // todas as bordas
             ],
-			[
-			  { text: 'Shipped per ss CMA CGM BELLIOZ', style: 'tableData' },
-			  { text: '', style: 'tableData' },
-			  { text: 'Our sale Nº: 063124', style: 'tableData' },
-			],
-			[
-			  { text: `Shipped from: ${fromLocation}`, style: 'tableData' },
-			  { text: '', style: 'tableData' },
-			  { text: 'Buyers order Nº: PO 107114', style: 'tableData' },
-			],
-			[
-			  { text: 'Destination: NEW ORLEANS', style: 'tableData' },
-			  { text: '', style: 'tableData' },
-			  { text: `Payment Conditions: ${paymentConditions}`, style: 'tableData' },
-			],
-			[
-			  {
-				text: 'For Account and Risk The FOLGER COFFEE COMPANY',
-				colSpan: 3,
-				style: 'tableData',
-			  },
-			  {},
-			  {},
-			],
-			[
-			  {
-				text: '1 STRAWBERRY LANE-ORRVILLE-OH 44667, ESTADOS UNIDOS - EXTERIOR - ENGLISH',
-				colSpan: 3,
-				style: 'tableData',
-			  },
-			  {},
-			  {},
-			],
-			[
-			  {
-				text: 'Through Bank:',
-				colSpan: 3,
-				style: 'tableData',
-			  },
-			  {},
-			  {},
-			],
+            [
+              { text: 'Shipped per ss CMA CGM BELLIOZ', style: 'tableData', border: [true, false, false, false], }, // borda esquerda
+              { text: '', style: 'tableData' },
+              { text: 'Our sale Nº: 063124', style: 'tableData', border: [false, false, true, false], },  // borda direita
+            ],
+            [
+              { text: `Shipped from: ${fromLocation}`, style: 'tableData', border: [true, false, false, false], }, // borda esquerda
+              { text: '', style: 'tableData' },
+              { text: 'Buyers order Nº: PO 107114', style: 'tableData', border: [false, false, true, false], }, // borda direita
+            ],
+            [
+              { text: 'Destination: NEW ORLEANS', style: 'tableData',  border: [true, false, false, false], },  // borda esquerda
+              { text: '', style: 'tableData' },
+              { text: `Payment Conditions: ${paymentConditions}`, style: 'tableData', border: [false, false, true, false], }, // borda direita
+            ],
+            [
+              {
+                text: 'For Account and Risk The FOLGER COFFEE COMPANY',
+                colSpan: 3,
+                border: [true, false, true, false],  // borda esquerda
+                style: 'tableData',
+              },
+              {},
+              {}, // borda direita
+            ],
+            [
+              {
+                text: '1 STRAWBERRY LANE-ORRVILLE-OH 44667, ESTADOS UNIDOS - EXTERIOR - ENGLISH',
+                colSpan: 3,
+                border: [true, false, true, false],  // borda esquerda
+                style: 'tableData',
+              },
+              {},
+              {}, // borda direita
+            ],
+            [
+              {
+                text: 'Through Bank:',
+                colSpan: 3,
+                border: [true, false, true, false],  // borda esquerda
+                style: 'tableData',
+              },
+              {},
+              {}, // borda direita
+            ],
           ],
         },
-        layout: 'headerLineOnly',
-        margin: [0, 0, 0, 10],
+        layout: {
+          defaultBorder: false,
+        },
+        margin: [0, 0, 0, 0],
       },
 
       // Tabela com descrição e quantidades
       {
         style: 'tableMain',
         table: {
-          widths: [100, '*', '*', '*'],	// mudar para 4 colunas
+          widths: [120, '*', '*', '*'],	// mudar para 4 colunas
           body: [
             [
-              { text: 'QUANTITY', style: 'tableHeader', alignment: 'center' },
+              { text: 'QUANTITY', style: 'tableHeader', alignment: 'center', border: [true, true, true, true] },  // todas as bordas
               {
-				text: 'DESCRIPTION OF THE GOODS',
-				colSpan: 3,
-				style: 'tableHeader',
-				alignment: 'center'
-			  },
-			  {},
-			  {},
+                text: 'DESCRIPTION OF THE GOODS',
+                colSpan: 3,
+                border: [true, true, true, true], // todas as bordas
+                style: 'tableHeader',
+                alignment: 'center'
+              },
+              {},
+              {},
+            ],
+            [
+              { text: "", border: [true, false, true, false] }, // borda esquerda e direita
+              {
+                text: description,
+                colSpan: 3,
+                border: [true, true, true, true], // todas as bordas
+                style: 'tableData',
+                alignment: 'center'
+              },
+              {},
+              {},
+            ],
+            [
+              {
+                stack: [
+                  { text: bags },
+                  { text: 'SCS' },
+                  { text: 'IN' },
+                ],
+                rowSpan: 2,
+                border: [true, false, true, false], // borda esquerda e direita
+                style: 'tableData',
+                alignment: 'center',
+              },
+              { text: 'TONS', alignment: 'center' },
+              { text: 'PRICE', alignment: 'center' },
+              { text: 'FOB VALUE (US$)', alignment: 'center', border: [false, false, true, false] },  // borda direita
             ],
             [
               {},
-			  { 
-				text: description,
-				colSpan: 3,
-				style: 'tableData',
-				alignment: 'center'
-			  },
-			  {},
-			  {},
+              { text: quantity, alignment: 'center' },
+              { text: '306.23 USD/SCS', alignment: 'center' },
+              { text: fobValue, alignment: 'center', border: [false, false, true, false] }, // borda direita
             ],
-			[
-			  {
-				stack: [
-				  { text: bags },
-				  { text: 'SCS' },
-				  { text: 'IN' },
-				],
-				rowSpan: 2,
-				style: 'tableData',
-                alignment: 'center',
-			  },
-			  { text: 'TONS', alignment: 'center', border: [true,true,true,true] },
-			  { text: 'PRICE', alignment: 'center' },
-			  { text: 'FOB VALUE (US$)', alignment: 'center' },
-			],
-			[
-			  {},
-			  { text: quantity, alignment: 'center'},
-			  { text: '306.23 USD/SCS', alignment: 'center'},
-			  { text: fobValue, alignment: 'center'},
-			],
-			[
-			  {},
-			  {
-				stack: [
-				  { text: 'BL: SSZ1543618' },
-				  { text: 'D/D: December 3, 2024'}
-				],
-				colSpan: 3,
-			  },
-			  {},
-			  {},
-			],
-			[
-			  {},
-			  {
-				stack: [
-				  { text: `GROSS WEIGHT: ${grossWeight}` },
-				  { text: `NET WEIGHT: ${netWeight}` },
-				],
-				colSpan: 2,
-			  },
-			  {},
-			  {},
-			],
+            [
+              { text: "", border: [true, false, true, false] }, // bordas esquerda e direita
+              {
+                stack: [
+                  { text: 'BL: SSZ1543618' },
+                  { text: 'D/D: December 3, 2024' }
+                ],
+                colSpan: 3,
+                border: [false, false, true, false],  // borda direita
+              },
+              {},
+              {},
+            ],
+            [
+              { text: "", border: [true, false, true, false] }, // borda direita
+              {
+                stack: [
+                  { text: `GROSS WEIGHT: ${grossWeight}` },
+                  { text: `NET WEIGHT: ${netWeight}` },
+                ],
+                colSpan: 3,
+                border: [false, false, true, false],  // borda direita
+              },
+              {},
+              {},
+            ],
           ],
         },
-        layout: 'noBorders',
-        margin: [0, 0, 0, 10],
+        layout: {
+          defaultBorder: false,
+        },
+        margin: [0, 0, 0, 0],
       },
 
       // Observações / Remarks / Bank Info
       {
         style: 'tableMain',
         table: {
-          widths: ['auto', '*', '*'],
+          widths: [120, '*', '*'],
           body: [
             [
-              { text: 'MARKS', style: 'tableHeader' },
-              { text: 'REMARKS', style: 'tableHeader' },
-              { text: '', style: 'tableHeader' },
+              { text: 'MARKS', style: 'tableHeader', border: [true, true, true, true] },
+              { text: 'REMARKS', style: 'tableHeader', border: [true, true, false, true] },
+              { text: '', style: 'tableHeader', border: [false, true, true, true] },
             ],
             [
               {
-				stack: [
-					{ text: 'CAFÉ DO BRASIL', alignment: 'center' },
-					{ text: 'TRISTÃO', alignment: 'center' },
-					{ text: '0531/24', alignment: 'center' },
-					{ text: '002/196-1/262', alignment: 'center' },
-				]
-			  },
+                stack: [
+                  { text: 'CAFÉ DO BRASIL', alignment: 'center' },
+                  { text: 'TRISTÃO', alignment: 'center' },
+                  { text: '0531/24', alignment: 'center' },
+                  { text: '002/196-1/262', alignment: 'center' },
+                ],
+                border: [true, false, true, true],  // bordas esquerda, direita e inferior
+              },
               {
                 text:
                   'INTERMEDIARY BANK: JPMORGAN CHASE BANK - NY\n' +
@@ -226,28 +243,34 @@ export const gerarInvoice = () => {
                   'SWIFT: BRASXXXXX\n' +
                   'ACCOUNT: 270120123456-7',
                 style: 'tableData',
+                border: [true, false, true, true],  // bordas esquerda, direita e inferior
               },
-			  {
-				stack: [
-					{ text: 'CNPJ', alignment: 'center' },
-					{ text: '27001247/0030-13', alignment: 'center' },
-				]
-			  },
+              {
+                stack: [
+                  { text: 'CNPJ', alignment: 'center' },
+                  { text: '27001247/0030-13', alignment: 'center' },
+                ],
+                border: [true, false, true, true],  // bordas esquerda, direita e inferior
+              },
             ],
+            [
+              {
+                text:
+                  'R. Governador Mário Covas 40 - Área nobre - CEP 21539-280 - Bairro de Noronha - Bahia - ES - Brasil\n' +
+                  'Tel: +55 (27) 3362-8900 - Fax: +55 (27) 3362-8989\n' +
+                  'Av. José Ribeiro Pinto, 128 - Conj. 06 - Pq. Ind. Xangai - MG - CEP 37037-013 - Brasil',
+                colSpan: 3,
+                border: [true, false, true, true],  // bordas esquerda, direita e inferior
+                style: 'footerText',
+                alignment: 'center',
+              }
+            ]
           ],
         },
-        layout: 'lightHorizontalLines',
-        margin: [0, 0, 0, 10],
-      },
-
-      // Rodapé com endereço e informações adicionais
-      {
-        text:
-          'R. Governador Mário Covas 40 – Área nobre – CEP 21539-280 – Bairro de Noronha – Bahia – ES – Brasil\n' +
-          'Tel: +55 (27) 3362-8900 – Fax: +55 (27) 3362-8989\n' +
-          'Av. José Ribeiro Pinto, 128 – Conj. 06 – Pq. Ind. Xangai – MG – CEP 37037-013 – Brasil',
-        style: 'footerText',
-        alignment: 'center',
+        layout: {
+          defaultBorder: false,
+        },
+        margin: [0, 0, 0, 0],
       },
     ],
     styles: {
