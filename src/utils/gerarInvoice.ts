@@ -1,15 +1,14 @@
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
+import { getBase64ImageFromURL } from './server';
 
-// É importante setar a fonte virtual do pdfmake
 pdfMake.vfs = pdfFonts.vfs;
 
 /**
  * Função que gera a impressão de uma invoice em PDF.
- * Pode ser chamada a partir de um componente React/Next.
  */
-export const gerarInvoice = () => {
-  // Defina aqui os dados dinâmicos da sua invoice, se necessário:
+export const gerarInvoice = async () => {
+
   const invoiceNumber = 'T.088/24';
   const invoiceDate = 'December 7, 2024';
   const fromLocation = 'SANTOS-SP';
@@ -23,10 +22,9 @@ export const gerarInvoice = () => {
   const netWeight = '259.20 KG';
   const grossWeight = '259.40 KG';
   const fobValue = 'US$ 1,322,865.60';
-  const description =
-    'Brazil Conilon Green Coffee - Crop: 2022/2023\nMATERIAL #4006772';
+  const description = 'Brazil Conilon Green Coffee - Crop: 2022/2023\nMATERIAL #4006772';
+  const logo = await getBase64ImageFromURL("@/../public/tristao.png")
 
-  // Definição do documento PDF (docDefinition) conforme layout desejado
   const docDefinition = {
     pageSize: 'A4',
     pageMargins: [25, 30, 25, 30],
@@ -36,7 +34,11 @@ export const gerarInvoice = () => {
     content: [
       // Cabeçalho principal
       {
-        image: 'public/tristao.png'
+        image: `data:image/png;base64,${logo}`,
+        width: 100,
+        height: 100,
+        alignment: 'center',
+        margin: [0, 0, 0, 10]
       },
       {
         text: 'TRISTÃO COMPANHIA DE COMÉRCIO EXTERIOR',
@@ -97,7 +99,7 @@ export const gerarInvoice = () => {
                 style: 'tableData',
               },
               {},
-              {}, // borda direita
+              {},
             ],
             [
               {
@@ -107,7 +109,7 @@ export const gerarInvoice = () => {
                 style: 'tableData',
               },
               {},
-              {}, // borda direita
+              {},
             ],
             [
               {
@@ -117,7 +119,7 @@ export const gerarInvoice = () => {
                 style: 'tableData',
               },
               {},
-              {}, // borda direita
+              {},
             ],
           ],
         },
@@ -131,7 +133,7 @@ export const gerarInvoice = () => {
       {
         style: 'tableMain',
         table: {
-          widths: [120, '*', '*', '*'],	// mudar para 4 colunas
+          widths: [120, '*', '*', '*'],
           body: [
             [
               { text: 'QUANTITY', style: 'tableHeader', alignment: 'center', border: [true, true, true, true] },  // todas as bordas
