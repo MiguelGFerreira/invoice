@@ -20,8 +20,8 @@ export default function Home() {
     setFilter({ ...filter, [name]: value });
   }
 
-  const handleClick = () => {
-    gerarInvoice();
+  const handleClick = (invoice: Invoice) => {
+    gerarInvoice(invoice);
   }
 
   async function fetchInvoices () {
@@ -112,7 +112,7 @@ export default function Home() {
         <tbody>
           {invoices.map((invoice) => (
             <tr key={invoice.NUMERO_INVOICE + invoice.NUMERO_EMBARQUE}>
-              <td className="h-full w-full bg-red-500"><DocumentCurrency onClick={handleClick} /></td>
+              <td className="h-full w-full bg-red-500"><DocumentCurrency onClick={() => handleClick(invoice)} /></td>
               <td>{invoice.NUMERO_INVOICE}</td>
               <td>{invoice.NUMERO_EMBARQUE}</td>
               <td>{invoice.FILIAL}</td>

@@ -1,29 +1,18 @@
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
 import { getBase64ImageFromURL } from './server';
+import { Invoice } from '@/types';
+import { formatarData } from './functions';
 
 pdfMake.vfs = pdfFonts.vfs;
 
 /**
  * Função que gera a impressão de uma invoice em PDF.
  */
-export const gerarInvoice = async () => {
+export const gerarInvoice = async (data: Invoice) => {
 
-  const invoiceNumber = 'T.088/24';
-  const invoiceDate = 'December 7, 2024';
-  const fromLocation = 'SANTOS-SP';
-  const toLocation = 'USS';
-  const invoiceTotal = '1,322,865.60';
-  const paymentConditions = 'NET 60 DAYS';
-  const reference = 'B/L 23219';
-  const buyer = 'STARBUCKS CORPORATION\n2401 UTAH AVE S, 8TH FLOOR\nSEATTLE, WA 98134, USA';
-  const quantity = '259,20';
-  const bags = '4.320';
-  const netWeight = '259.20 KG';
-  const grossWeight = '259.40 KG';
-  const fobValue = 'US$ 1,322,865.60';
-  const description = 'Brazil Conilon Green Coffee - Crop: 2022/2023\nMATERIAL #4006772';
-  const logo = await getBase64ImageFromURL("@/../public/images/tristao.png")
+  const description = 'Brazil Conilon Green Coffee - Crop: 2022/2023\nMATERIAL #4006772'; // ver com joao para mudar isso
+  const logo = await getBase64ImageFromURL("@/../public/images/tristao.png");
 
   const docDefinition = {
     pageSize: 'A4',
@@ -64,36 +53,36 @@ export const gerarInvoice = async () => {
               { text: 'AMOUNT', style: 'tableHeader', alignment: 'center', border: [true, true, true, true], }, // todas as bordas
             ],
             [
-              { text: invoiceNumber, style: 'tableData', alignment: 'center', border: [true, true, true, true], }, // todas as bordas
+              { text: data.NUMERO_INVOICE, style: 'tableData', alignment: 'center', border: [true, true, true, true], }, // todas as bordas
               {
                 stack: [
-                  { text: fromLocation },
-                  { text: invoiceDate },
+                  { text: data.PORTO_ORIGEM },
+                  { text: formatarData(data.DATA_EMBARQUE,true) }, // TODO: ver logica para formatacao da data
                 ],
                 style: 'tableData',
                 alignment: 'center',
                 border: [true, true, true, true],  // todas as bordas
               },
-              { text: invoiceTotal, style: 'tableData', alignment: 'center', border: [true, true, true, true], },  // todas as bordas
+              { text: data.VALOR_INVOICE, style: 'tableData', alignment: 'center', border: [true, true, true, true], },  // todas as bordas
             ],
             [
-              { text: 'Shipped per ss CMA CGM BELLIOZ', style: 'tableData', border: [true, false, false, false], }, // borda esquerda
+              { text: `Shipped per s/s: ${data.SHIPPED_PER}`, style: 'tableData', border: [true, false, false, false], }, // borda esquerda
               { text: '', style: 'tableData' },
-              { text: 'Our sale Nº: 063124', style: 'tableData', border: [false, false, true, false], },  // borda direita
+              { text: `Our sale Nº: ${data.NUMERO_EMBARQUE}`, style: 'tableData', border: [false, false, true, false], },  // borda direita
             ],
             [
-              { text: `Shipped from: ${fromLocation}`, style: 'tableData', border: [true, false, false, false], }, // borda esquerda
+              { text: `Shipped from: ${data.PORTO_ORIGEM}`, style: 'tableData', border: [true, false, false, false], }, // borda esquerda
               { text: '', style: 'tableData' },
-              { text: 'Buyers order Nº: PO 107114', style: 'tableData', border: [false, false, true, false], }, // borda direita
+              { text: 'Buyers ctr Nº: PO 107114', style: 'tableData', border: [false, false, true, false], }, // borda direita
             ],
             [
-              { text: 'Destination: NEW ORLEANS', style: 'tableData',  border: [true, false, false, false], },  // borda esquerda
+              { text: `Destination: ${data.LOCAL_DESTINO}`, style: 'tableData',  border: [true, false, false, false], },  // borda esquerda
               { text: '', style: 'tableData' },
-              { text: `Payment Conditions: ${paymentConditions}`, style: 'tableData', border: [false, false, true, false], }, // borda direita
+              { text: `Payment Conditions: PO ${data.PO}`, style: 'tableData', border: [false, false, true, false], }, // borda direita
             ],
             [
               {
-                text: 'For Account and Risk The FOLGER COFFEE COMPANY',
+                text: `For Account and Risk ${data.CLIENTE}`,
                 colSpan: 3,
                 border: [true, false, true, false],  // borda esquerda
                 style: 'tableData',
@@ -103,7 +92,7 @@ export const gerarInvoice = async () => {
             ],
             [
               {
-                text: '1 STRAWBERRY LANE-ORRVILLE-OH 44667, ESTADOS UNIDOS - EXTERIOR - ENGLISH',
+                text: data.ENDERECO_CLIENTE,
                 colSpan: 3,
                 border: [true, false, true, false],  // borda esquerda
                 style: 'tableData',
@@ -162,7 +151,7 @@ export const gerarInvoice = async () => {
             [
               {
                 stack: [
-                  { text: bags },
+                  { text: data.SACAS },
                   { text: 'SCS' },
                   { text: 'IN' },
                 ],
@@ -177,16 +166,16 @@ export const gerarInvoice = async () => {
             ],
             [
               {},
-              { text: quantity, alignment: 'center' },
+              { text: data.PESO_LIQUIDO/1000, alignment: 'center' },
               { text: '306.23 USD/SCS', alignment: 'center' },
-              { text: fobValue, alignment: 'center', border: [false, false, true, false] }, // borda direita
+              { text: data.VALOR_INVOICE, alignment: 'center', border: [false, false, true, false] }, // borda direita
             ],
             [
               { text: "", border: [true, false, true, false] }, // bordas esquerda e direita
               {
                 stack: [
-                  { text: 'BL: SSZ1543618' },
-                  { text: 'D/D: December 3, 2024' }
+                  { text: `BL: ${data.BL}` },
+                  { text: `D/D: ${formatarData(data.DATA_DUE, true)}` }
                 ],
                 colSpan: 3,
                 border: [false, false, true, false],  // borda direita
@@ -198,8 +187,8 @@ export const gerarInvoice = async () => {
               { text: "", border: [true, false, true, false] }, // borda direita
               {
                 stack: [
-                  { text: `GROSS WEIGHT: ${grossWeight}` },
-                  { text: `NET WEIGHT: ${netWeight}` },
+                  { text: `GROSS WEIGHT: ${data.PESO_BRUTO} Kgs` },
+                  { text: `NET WEIGHT: ${data.PESO_LIQUIDO} Kgs` },
                 ],
                 colSpan: 3,
                 border: [false, false, true, false],  // borda direita
@@ -231,8 +220,8 @@ export const gerarInvoice = async () => {
                 stack: [
                   { text: 'CAFÉ DO BRASIL', alignment: 'center' },
                   { text: 'TRISTÃO', alignment: 'center' },
-                  { text: '0531/24', alignment: 'center' },
-                  { text: '002/196-1/262', alignment: 'center' },
+                  { text: data.NUMERO_EMBARQUE, alignment: 'center' },
+                  { text: data.OIC, alignment: 'center' },
                 ],
                 border: [true, false, true, true],  // bordas esquerda, direita e inferior
               },
