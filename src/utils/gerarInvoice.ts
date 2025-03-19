@@ -23,7 +23,7 @@ export const gerarInvoice = async () => {
   const grossWeight = '259.40 KG';
   const fobValue = 'US$ 1,322,865.60';
   const description = 'Brazil Conilon Green Coffee - Crop: 2022/2023\nMATERIAL #4006772';
-  const logo = await getBase64ImageFromURL("@/../public/tristao.png")
+  const logo = await getBase64ImageFromURL("@/../public/images/tristao.png")
 
   const docDefinition = {
     pageSize: 'A4',
