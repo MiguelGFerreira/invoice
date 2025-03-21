@@ -13,6 +13,7 @@ export interface Invoice {
 	LOCAL_DESTINO: string,
 	ENDERECO_CLIENTE: string,
 	EMBALAGEM: string,
+	QTD_EMB: number,
 	PRECO_UNIT: number,
 	PRECO_60KG: number,
 	PRECO_CENT_LIB: number,
@@ -37,5 +38,5 @@ export interface Invoice {
 	DATA_DUE: string,
 	SHIPPED_PER: string,
 	OIC: string,
-	EE8_QTDEM1: number,
+	//EE8_QTDEM1: number,
 }

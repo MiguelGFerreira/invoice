@@ -1,6 +1,6 @@
 //import axios from "axios";
 
-const API_URL = "http://localhost:8000"
+const API_URL = "http://10.10.200.146:8000"
 
 export const getInvoices = async (filters: { dateStart?: string, dateEnd?: string }) => {
 	const query = new URLSearchParams();

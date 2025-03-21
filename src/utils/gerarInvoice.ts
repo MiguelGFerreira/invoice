@@ -2,7 +2,7 @@ import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
 import { getBase64ImageFromURL } from './server';
 import { Invoice } from '@/types';
-import { formatarData } from './functions';
+import { formatarData, getPaymentTerm } from './functions';
 
 pdfMake.vfs = pdfFonts.vfs;
 
@@ -13,6 +13,11 @@ export const gerarInvoice = async (data: Invoice) => {
 
   const description = 'Brazil Conilon Green Coffee - Crop: 2022/2023\nMATERIAL #4006772'; // ver com joao para mudar isso
   const logo = await getBase64ImageFromURL("@/../public/images/tristao.png");
+  const cnpj = data.FILIAL == 21 ? "27001247/0030-13" : "27001247/0037-90"
+  const valorFormatado = new Intl.NumberFormat('en-us', {minimumFractionDigits: 2}).format(data.VALOR_INVOICE)
+  const pesoBrutoFormatado = new Intl.NumberFormat('en-us', {minimumFractionDigits: 2}).format(data.PESO_BRUTO)
+  const pesoLiquidoFormatado = new Intl.NumberFormat('en-us', {minimumFractionDigits: 2}).format(data.PESO_LIQUIDO)
+  const pesoLiquidoSacasFormatado = new Intl.NumberFormat('en-us', {minimumFractionDigits: 2}).format(data.PESO_LIQUIDO/1000)
 
   const docDefinition = {
     pageSize: 'A4',
@@ -57,13 +62,13 @@ export const gerarInvoice = async (data: Invoice) => {
               {
                 stack: [
                   { text: data.PORTO_ORIGEM },
-                  { text: formatarData(data.DATA_EMBARQUE,true) }, // TODO: ver logica para formatacao da data
+                  { text: formatarData(data.DATA_EMBARQUE,true) },
                 ],
                 style: 'tableData',
                 alignment: 'center',
                 border: [true, true, true, true],  // todas as bordas
               },
-              { text: data.VALOR_INVOICE, style: 'tableData', alignment: 'center', border: [true, true, true, true], },  // todas as bordas
+              { text: `US ${valorFormatado}`, style: 'tableData', alignment: 'center', border: [true, true, true, true], },  // todas as bordas
             ],
             [
               { text: `Shipped per s/s: ${data.SHIPPED_PER}`, style: 'tableData', border: [true, false, false, false], }, // borda esquerda
@@ -73,12 +78,12 @@ export const gerarInvoice = async (data: Invoice) => {
             [
               { text: `Shipped from: ${data.PORTO_ORIGEM}`, style: 'tableData', border: [true, false, false, false], }, // borda esquerda
               { text: '', style: 'tableData' },
-              { text: 'Buyers ctr Nº: PO 107114', style: 'tableData', border: [false, false, true, false], }, // borda direita
+              { text: `Buyers ctr Nº: PO ${data.PO}`, style: 'tableData', border: [false, false, true, false], }, // borda direita
             ],
             [
               { text: `Destination: ${data.LOCAL_DESTINO}`, style: 'tableData',  border: [true, false, false, false], },  // borda esquerda
               { text: '', style: 'tableData' },
-              { text: `Payment Conditions: PO ${data.PO}`, style: 'tableData', border: [false, false, true, false], }, // borda direita
+              { text: `Payment Conditions: ${getPaymentTerm(data.CONDICAO_PAGAMENTO)}`, style: 'tableData', border: [false, false, true, false], }, // borda direita
             ],
             [
               {
@@ -166,9 +171,9 @@ export const gerarInvoice = async (data: Invoice) => {
             ],
             [
               {},
-              { text: data.PESO_LIQUIDO/1000, alignment: 'center' },
+              { text: pesoLiquidoSacasFormatado, alignment: 'center' },
               { text: '306.23 USD/SCS', alignment: 'center' },
-              { text: data.VALOR_INVOICE, alignment: 'center', border: [false, false, true, false] }, // borda direita
+              { text: valorFormatado, alignment: 'center', border: [false, false, true, false] }, // borda direita
             ],
             [
               { text: "", border: [true, false, true, false] }, // bordas esquerda e direita
@@ -187,8 +192,8 @@ export const gerarInvoice = async (data: Invoice) => {
               { text: "", border: [true, false, true, false] }, // borda direita
               {
                 stack: [
-                  { text: `GROSS WEIGHT: ${data.PESO_BRUTO} Kgs` },
-                  { text: `NET WEIGHT: ${data.PESO_LIQUIDO} Kgs` },
+                  { text: `GROSS WEIGHT: ${pesoBrutoFormatado} Kgs` },
+                  { text: `NET WEIGHT: ${pesoLiquidoFormatado} Kgs` },
                 ],
                 colSpan: 3,
                 border: [false, false, true, false],  // borda direita
@@ -239,7 +244,7 @@ export const gerarInvoice = async (data: Invoice) => {
               {
                 stack: [
                   { text: 'CNPJ', alignment: 'center' },
-                  { text: '27001247/0030-13', alignment: 'center' },
+                  { text: cnpj, alignment: 'center' },
                 ],
                 border: [true, false, true, true],  // bordas esquerda, direita e inferior
               },

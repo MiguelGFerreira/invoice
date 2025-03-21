@@ -1,6 +1,6 @@
 import * as React from "react"
 const DocumentCurrency = (props) => (
-  <div className="bg-red-500">
+  <div className="cursor-pointer">
     <svg
       xmlns="http://www.w3.org/2000/svg"
       fill="none"

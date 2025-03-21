@@ -4,7 +4,7 @@ import spinner from '@/../public/images/spinner.png'
 
 const LoadingSpinner = () => {
 	return (
-		<div role="status" className="flex justify-center mt-12">
+		<div role="status" className="w-full flex justify-center">
 			<Image
 				src={spinner}
 				alt={"loading_spinner"}
