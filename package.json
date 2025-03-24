@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "invoice": "file:",
-    "next": "15.2.3",
+    "next": "^15.2.3",
     "pdfmake": "^0.2.18",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"

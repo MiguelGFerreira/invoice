@@ -71,17 +71,17 @@ export const gerarInvoice = async (data: Invoice) => {
               { text: `US ${valorFormatado}`, style: 'tableData', alignment: 'center', border: [true, true, true, true], },  // todas as bordas
             ],
             [
-              { text: `Shipped per s/s: ${data.SHIPPED_PER}`, style: 'tableData', border: [true, false, false, false], }, // borda esquerda
+              { text: `Shipped per s/s: ${data.SHIPPED_PER}`, style: 'tableData', colSpan: 2, border: [true, false, false, false], }, // borda esquerda
               { text: '', style: 'tableData' },
               { text: `Our sale Nº: ${data.NUMERO_EMBARQUE}`, style: 'tableData', border: [false, false, true, false], },  // borda direita
             ],
             [
-              { text: `Shipped from: ${data.PORTO_ORIGEM}`, style: 'tableData', border: [true, false, false, false], }, // borda esquerda
+              { text: `Shipped from: ${data.PORTO_ORIGEM}`, style: 'tableData', colSpan: 2,  border: [true, false, false, false], }, // borda esquerda
               { text: '', style: 'tableData' },
               { text: `Buyers ctr Nº: PO ${data.PO}`, style: 'tableData', border: [false, false, true, false], }, // borda direita
             ],
             [
-              { text: `Destination: ${data.LOCAL_DESTINO}`, style: 'tableData',  border: [true, false, false, false], },  // borda esquerda
+              { text: `Destination: ${data.LOCAL_DESTINO}`, style: 'tableData', colSpan: 2,  border: [true, false, false, false], },  // borda esquerda
               { text: '', style: 'tableData' },
               { text: `Payment Conditions: ${getPaymentTerm(data.CONDICAO_PAGAMENTO)}`, style: 'tableData', border: [false, false, true, false], }, // borda direita
             ],
@@ -155,12 +155,13 @@ export const gerarInvoice = async (data: Invoice) => {
             ],
             [
               {
-                stack: [
-                  { text: data.SACAS },
-                  { text: 'SCS' },
-                  { text: 'IN' },
-                ],
-                rowSpan: 2,
+                // stack: [
+                //   { text: data.SACAS },
+                //   { text: 'SCS' },
+                //   { text: 'IN' },
+                // ],
+                text: "440\nSCS\nIN",
+                rowSpan: 3,
                 border: [true, false, true, false], // borda esquerda e direita
                 style: 'tableData',
                 alignment: 'center',
@@ -252,9 +253,8 @@ export const gerarInvoice = async (data: Invoice) => {
             [
               {
                 text:
-                  'R. Governador Mário Covas 40 - Área nobre - CEP 21539-280 - Bairro de Noronha - Bahia - ES - Brasil\n' +
-                  'Tel: +55 (27) 3362-8900 - Fax: +55 (27) 3362-8989\n' +
-                  'Av. José Ribeiro Pinto, 128 - Conj. 06 - Pq. Ind. Xangai - MG - CEP 37037-013 - Brasil',
+                  'Rod. Governador Mário Covas n° 400 - CEP 29135-320 - Bairro Marcilio de Noronha - Viana - ES - Brasil Tel: +55 27 3334-9800\n' +
+                  'Av. José Ribeiro Tristão, n° 505 parte - bairro Aeroporto - Varginha - MG - CEP 37031-075 - Brasil - Tel: +55 35 2105-9800',
                 colSpan: 3,
                 border: [true, false, true, true],  // bordas esquerda, direita e inferior
                 style: 'footerText',
