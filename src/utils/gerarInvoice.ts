@@ -19,6 +19,28 @@ export const gerarInvoice = async (data: Invoice) => {
   const pesoLiquidoFormatado = new Intl.NumberFormat('en-us', {minimumFractionDigits: 2}).format(data.PESO_LIQUIDO)
   const pesoLiquidoSacasFormatado = new Intl.NumberFormat('en-us', {minimumFractionDigits: 2}).format(data.PESO_LIQUIDO/1000)
 
+  const getQuantityText = () => {
+    /*
+    if (data.EMBALAGEM === "BULK") {
+      return `${data.SACAS}\nSCS\nIN\nBULK`
+    }
+
+    if (data.EMBALAGEM === "BIG BAG") {
+      return `${data.QTD_EMB}\nBIG BAGS`
+    }
+
+    return `${data.QTD_EMB}\nSCS\nIN\nJUTE`
+    */
+
+    // agora bonito
+    const embalagensMap: Record<string, string> = {
+      BULK: `${data.SACAS}\nSCS\nIN\nBULK`,
+      "BIG BAG": `${data.QTD_EMB}\nBIG BAGS`
+    }
+
+    return embalagensMap[data.EMBALAGEM] || `${data.QTD_EMB}\nSCS\nIN\nJUTE` // vai olhar no hashmap se existe a embalagem la. Se nao existir, vai retornar os dados em sacas in jute
+  }
+
   const docDefinition = {
     pageSize: 'A4',
     pageMargins: [25, 30, 25, 30],
@@ -155,12 +177,7 @@ export const gerarInvoice = async (data: Invoice) => {
             ],
             [
               {
-                // stack: [
-                //   { text: data.SACAS },
-                //   { text: 'SCS' },
-                //   { text: 'IN' },
-                // ],
-                text: "440\nSCS\nIN",
+                text: getQuantityText(),
                 rowSpan: 3,
                 border: [true, false, true, false], // borda esquerda e direita
                 style: 'tableData',
