@@ -13,6 +13,7 @@ export const gerarInvoice = async (data: Invoice) => {
 
   const description = 'Brazil Conilon Green Coffee - Crop: 2022/2023\nMATERIAL #4006772'; // ver com joao para mudar isso
   const logo = await getBase64ImageFromURL("@/../public/images/tristao.png");
+  const singature = await getBase64ImageFromURL("@/../public/images/assinatura.png");
   const cnpj = data.FILIAL == 21 ? "27001247/0030-13" : "27001247/0037-90"
   const valorFormatado = new Intl.NumberFormat('en-us', {minimumFractionDigits: 2}).format(data.VALOR_INVOICE)
   const pesoBrutoFormatado = new Intl.NumberFormat('en-us', {minimumFractionDigits: 2}).format(data.PESO_BRUTO)
@@ -277,7 +278,25 @@ export const gerarInvoice = async (data: Invoice) => {
                 style: 'footerText',
                 alignment: 'center',
               }
-            ]
+            ],
+            [
+              {
+                image: `data:image/png;base64,${singature}`,
+                width: 50,
+                height: 50,
+                alignment: 'right',
+                margin: [0, 0, 0, 0]
+              },
+              {
+                text: 'p.p Tristão Companhia de Comércio Exterior',
+                colSpan: 2,
+                border: [false, false, false, false],  // bordas esquerda, direita e inferior
+                style: 'footerText',
+                alignment: 'left',
+                bold: true,
+                margin: [70, 0, 0, 0]
+              }
+            ],
           ],
         },
         layout: {
@@ -308,7 +327,7 @@ export const gerarInvoice = async (data: Invoice) => {
       },
       footerText: {
         fontSize: 7,
-        color: '#555',
+        color: '#000',
       },
     },
   };
