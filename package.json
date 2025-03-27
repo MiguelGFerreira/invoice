@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@headlessui/react": "^2.2.0",
     "invoice": "file:",
     "next": "^15.2.3",
     "pdfmake": "^0.2.18",
