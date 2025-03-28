@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import DocumentCurrency from "@/../public/icons/DocumentCurrency";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import { formatarData } from "@/utils/functions"
+import Modal from "@/components/Modal";
 
 export default function Home() {
   const [filter, setFilter] = useState({
@@ -15,6 +16,19 @@ export default function Home() {
   });
   const [invoices, setInvoices] = useState<Invoice[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedInvoice, setSelectedInvoice] = useState<Invoice | null>(null);
+
+  const handleOpenModal = (invoice: number) => {
+    const selected = invoices.filter((perm) => perm.ID === invoice)
+    setSelectedInvoice(selected[0]);
+    setIsModalOpen(true);
+  }
+
+  const closeModal = () => {
+    setSelectedInvoice(null);
+    setIsModalOpen(false);
+  }
 
   const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -113,9 +127,9 @@ export default function Home() {
         </thead>
 
         <tbody>
-          {invoices.map((invoice, idx) => (
-            <tr key={idx}>
-              <td><DocumentCurrency onClick={() => handleClick(invoice)} /></td>
+          {invoices.map((invoice) => (
+            <tr key={invoice.ID}>
+              <td><DocumentCurrency onClick={() => handleOpenModal(invoice.ID)} /></td>
               <td>{invoice.NUMERO_INVOICE}</td>
               <td>{invoice.NUMERO_EMBARQUE}</td>
               <td>{invoice.FILIAL}</td>
@@ -159,6 +173,25 @@ export default function Home() {
           ))}
         </tbody>
       </table>
+
+      {selectedInvoice && (
+        <Modal isOpen={isModalOpen} closeModal={closeModal} title={"Invoice Selecionada"}>
+          <form onSubmit={(e) => { e.preventDefault(); gerarInvoice(selectedInvoice) }}>
+            <div className="space-y-4">
+              <div>
+                <label htmlFor="description">Description</label>
+                <input type="text" id="description" />
+              </div>
+            </div>
+
+            <div className="mt-6 flex justify-end">
+              <button type="submit">
+                Gerar
+              </button>
+            </div>
+          </form>
+        </Modal>
+      )}
     </div>
   );
 }

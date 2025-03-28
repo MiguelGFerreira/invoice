@@ -1,5 +1,6 @@
 export interface Invoice {
 	NUMERO_INVOICE: string,
+	ID: number,
 	NUMERO_EMBARQUE: string,
 	FILIAL: number,
 	PEDIDO: string,
