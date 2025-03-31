@@ -191,7 +191,7 @@ export const gerarInvoice = async (data: Invoice) => {
             [
               {},
               { text: pesoLiquidoSacasFormatado, alignment: 'center' },
-              { text: '306.23 USD/SCS', alignment: 'center' },
+              { text: `306.23 ${data.COND_PAG}`, alignment: 'center' },
               { text: valorFormatado, alignment: 'center', border: [false, false, true, false] }, // borda direita
             ],
             [

@@ -39,5 +39,6 @@ export interface Invoice {
 	DATA_DUE: string,
 	SHIPPED_PER: string,
 	OIC: string,
+	COND_PAG: string,
 	//EE8_QTDEM1: number,
 }
