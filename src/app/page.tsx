@@ -5,12 +5,11 @@ import { Invoice } from "@/types";
 import { gerarInvoice } from "@/utils/gerarInvoice";
 import { useEffect, useState } from "react";
 import DocumentCurrency from "@/../public/icons/DocumentCurrency";
+import CheckCircleIcon from "@/../public/icons/CheckCircleIcon";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import { formatarData } from "@/utils/functions"
 import Modal from "@/components/Modal";
 import { Field, Label, Radio, RadioGroup } from "@headlessui/react";
-
-const plans = ['USD/SCS', 'USC/LB', 'USD/Mton', 'USD/50KG']
 
 export default function Home() {
   const [filter, setFilter] = useState({
@@ -21,10 +20,16 @@ export default function Home() {
   const [loading, setLoading] = useState<boolean>(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedInvoice, setSelectedInvoice] = useState<Invoice | null>(null);
+  const [prices, setPrices] = useState([{
+    unity: '',
+    price: 0
+  }]);
 
-  const handleOpenModal = (invoice: number) => {
-    const selected = invoices.filter((perm) => perm.ID === invoice)
-    setSelectedInvoice(selected[0]);
+  const handleOpenModal = (invoiceId: number) => {
+    const selected = invoices.find((inv) => inv.ID === invoiceId)
+    if (!selected) return;
+
+    setSelectedInvoice(selected);
     setIsModalOpen(true);
   }
 
@@ -48,6 +53,17 @@ export default function Home() {
   useEffect(() => {
     fetchInvoices()
   }, [])
+
+  useEffect(() => {
+    if (selectedInvoice) {
+      setPrices([
+        { unity: 'USD/SCS', price: selectedInvoice.PRECO_60KG },
+        { unity: 'USC/LB', price: selectedInvoice.PRECO_CENT_LIB },
+        { unity: 'USD/Mton', price: selectedInvoice.PRECO_TONELADAS },
+        { unity: 'USD/50KG', price: selectedInvoice.PRECO_50KG }
+      ])
+    }
+  }, [selectedInvoice])
 
   if (loading) return <LoadingSpinner />
 
@@ -188,16 +204,20 @@ export default function Home() {
               onChange={(value) => setSelectedInvoice({ ...selectedInvoice, COND_PAG: value })}
               className="space-y-4"
             >
-              {plans.map((plan) => (
-                <Field key={plan} className="flex items-center gap-2">
-                  <Radio
-                    value={plan}
-                    className="group flex size-5 items-center justify-center rounded-full border bg-white data-[checked]:bg-[#003B2F]"
-                  >
-                    <span className="invisible size-2 rounded-full bg-white group-data-[checked]:visible" />
-                  </Radio>
-                  <Label>{plan}</Label>
-                </Field>
+              {prices.map((price) => (
+                <Radio
+                  key={price.unity}
+                  value={price.unity}
+                  className="group relative flex cursor-pointer rounded-lg bg-white/5 py-4 px-5 text-black shadow-md transition focus:outline-none data-[focus]:outline-white data-[checked]:bg-[#003B2F]"
+                >
+                  <div className="flex w-full items-center justify-between">
+                    <div className="text-sm/6">
+                      <p className="group-data-[checked]:text-white">{price.unity}</p>
+                      <div className="text-black/50 group-data-[checked]:text-white" >{price.price}</div>
+                    </div>
+                    <CheckCircleIcon className="size-6 fill-white opacity-0 transition group-data-[checked]:opacity-100" />
+                  </div>
+                </Radio>
               ))}
             </RadioGroup>
 
