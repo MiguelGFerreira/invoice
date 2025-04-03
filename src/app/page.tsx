@@ -65,8 +65,6 @@ export default function Home() {
     }
   }, [selectedInvoice])
 
-  if (loading) return <LoadingSpinner />
-
   return (
     <div className="principal">
       <h1>Tela de Invoice</h1>
@@ -95,99 +93,41 @@ export default function Home() {
         </form>
       </section>
 
-      <table className="grupotristao">
-        <thead>
-          <tr>
-            <th>Gerar</th>
-            <th>Invoice</th>
-            <th>Embarque</th>
-            <th>Filial</th>
-            <th>Pedido</th>
-            <th>PO</th>
-            <th>Data Pedido</th>
-            <th>Cond. Pag.</th>
-            <th>Sit. Pedido</th>
-            {/* <th>Porto de Origem</th> */}
-            <th>Cliente</th>
-            {/* <th>País Destino</th>
-            <th>Local Destino</th>
-            <th>End. Cliente</th>
-            <th>Emb.</th>
-            <th>Preço Un.</th>
-            <th>Preço 60kg</th>
-            <th>Preço Cent/Lib</th>
-            <th>Preço Ton.</th>
-            <th>Preço 50kg</th>
-            <th>Ref. Importação</th>
-            <th>Peso Liq.</th>
-            <th>Peso Bruto</th>
-            <th>Documentos</th>
-            <th>Sacas</th>
-            <th>Embarque</th>
-            <th>Status Embarque</th>
-            <th>Data Embarque</th>
-            <th>Data Conhecimento</th>
-            <th>Pedido Exp.</th>
-            <th>Via</th>
-            <th>Data Invoice</th>
-            <th>BL</th>
-            <th>Valor Invoice</th>
-            <th>Num. Due</th>
-            <th>Chave Due</th>
-            <th>Data Due</th>
-            <th>Shipped Per</th>
-            <th>OIC</th>
-            <th>EE8_QTDEM1</th> */}
-          </tr>
-        </thead>
-
-        <tbody>
-          {invoices.map((invoice) => (
-            <tr key={invoice.ID}>
-              <td><DocumentCurrency onClick={() => handleOpenModal(invoice.ID)} className="cursor-pointer" /></td>
-              <td>{invoice.NUMERO_INVOICE}</td>
-              <td>{invoice.NUMERO_EMBARQUE}</td>
-              <td>{invoice.FILIAL}</td>
-              <td>{invoice.PEDIDO}</td>
-              <td>{invoice.PO}</td>
-              <td>{formatarData(invoice.DATA_PEDIDO)}</td>
-              <td>{invoice.CONDICAO_PAGAMENTO}</td>
-              <td>{invoice.SITUACAO_PEDIDO}</td>
-              {/* <td>{invoice.PORTO_ORIGEM}</td> */}
-              <td>{invoice.CLIENTE}</td>
-              {/* <td>{invoice.PASIDEST}</td>
-              <td>{invoice.LOCAL_DESTINO}</td>
-              <td>{invoice.ENDERECO_CLIENTE}</td>
-              <td>{invoice.EMBALAGEM}</td>
-              <td>{invoice.PRECO_UNIT}</td>
-              <td>{invoice.PRECO_60KG}</td>
-              <td>{invoice.PRECO_CENT_LIB}</td>
-              <td>{invoice.PRECO_TONELADAS}</td>
-              <td>{invoice.PRECO_50KG}</td>
-              <td>{invoice.REF_IMPORTACAO}</td>
-              <td>{invoice.PESO_LIQUIDO}</td>
-              <td>{invoice.PESO_BRUTO}</td>
-              <td>{invoice.DOCUMENTOS}</td>
-              <td>{invoice.SACAS}</td>
-              <td>{invoice.EMBARQUE}</td>
-              <td>{invoice.STATUS_EMBARQUE}</td>
-              <td>{formatarData(invoice.DATA_EMBARQUE)}</td>
-              <td>{formatarData(invoice.DATA_CONHECIMENTO)}</td>
-              <td>{invoice.PEDIDO_EXPORTACAO}</td>
-              <td>{invoice.VIA}</td>
-              <td>{formatarData(invoice.DATA_INVOICE)}</td>
-              <td>{invoice.BL}</td>
-              <td>{invoice.VALOR_INVOICE}</td>
-              <td>{invoice.NUMERO_DUE}</td>
-              <td>{invoice.CHAVE_DUE}</td>
-              <td>{formatarData(invoice.DATA_DUE)}</td>
-              <td>{invoice.SHIPPED_PER}</td>
-              <td>{invoice.OIC}</td>
-              <td>{invoice.EE8_QTDEM1}</td> */}
+      {loading ? <LoadingSpinner /> :
+        <table className="grupotristao">
+          <thead>
+            <tr>
+              <th>Gerar</th>
+              <th>Invoice</th>
+              <th>Embarque</th>
+              <th>Filial</th>
+              <th>Pedido</th>
+              <th>PO</th>
+              <th>Data Pedido</th>
+              <th>Cond. Pag.</th>
+              <th>Sit. Pedido</th>
+              <th>Cliente</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+
+          <tbody>
+            {invoices.map((invoice) => (
+              <tr key={invoice.ID}>
+                <td><DocumentCurrency onClick={() => handleOpenModal(invoice.ID)} className="cursor-pointer" /></td>
+                <td>{invoice.NUMERO_INVOICE}</td>
+                <td>{invoice.NUMERO_EMBARQUE}</td>
+                <td>{invoice.FILIAL}</td>
+                <td>{invoice.PEDIDO}</td>
+                <td>{invoice.PO}</td>
+                <td>{formatarData(invoice.DATA_PEDIDO)}</td>
+                <td>{invoice.CONDICAO_PAGAMENTO}</td>
+                <td>{invoice.SITUACAO_PEDIDO}</td>
+                <td>{invoice.CLIENTE}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      }
 
       {selectedInvoice && (
         <Modal isOpen={isModalOpen} closeModal={closeModal} title={"Invoice Selecionada"}>
@@ -195,14 +135,14 @@ export default function Home() {
             <div className="space-y-4">
               <div>
                 <label htmlFor="description">Description</label>
-                <input type="text" id="description" />
+                <input type="text" id="description" onChange={(desc) => setSelectedInvoice({ ...selectedInvoice, DESCRIPTION: desc.target.value})} />
               </div>
             </div>
 
             <RadioGroup
               value={selectedInvoice.COND_PAG}
               onChange={(value) => setSelectedInvoice({ ...selectedInvoice, COND_PAG: value })}
-              className="space-y-4"
+              className="grid grid-cols-2 gap-4"
             >
               {prices.map((price) => (
                 <Radio
@@ -213,9 +153,9 @@ export default function Home() {
                   <div className="flex w-full items-center justify-between">
                     <div className="text-sm/6">
                       <p className="group-data-[checked]:text-white">{price.unity}</p>
-                      <div className="text-black/50 group-data-[checked]:text-white" >{price.price}</div>
+                      <input className="text-black/70" type="text" defaultValue={price.price} onChange={(desc) => setSelectedInvoice({ ...selectedInvoice, PRECO_FORMATADO: desc.target.value})} />
                     </div>
-                    <CheckCircleIcon className="size-6 fill-white opacity-0 transition group-data-[checked]:opacity-100" />
+                    <CheckCircleIcon className="size-6 absolute top-4 right-4 fill-white opacity-0 transition group-data-[checked]:opacity-100" />
                   </div>
                 </Radio>
               ))}

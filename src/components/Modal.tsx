@@ -39,7 +39,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, closeModal, title, children }) =>
                 <DialogTitle as="h3" className="text-lg font-medium leading-6 text-[#003B2F]">
                   {title}
                 </DialogTitle>
-                <div className="mt-4 space-y-4">{/* Aqui aumentamos o espaçamento entre os itens */}
+                <div className="mt-4 space-y-4">
                   {children}
                 </div>
                 <div className="mt-6 flex justify-end">

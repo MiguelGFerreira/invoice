@@ -40,5 +40,7 @@ export interface Invoice {
 	SHIPPED_PER: string,
 	OIC: string,
 	COND_PAG: string,
+	DESCRIPTION: string,
+	PRECO_FORMATADO: string,
 	//EE8_QTDEM1: number,
 }

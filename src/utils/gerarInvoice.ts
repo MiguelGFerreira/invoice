@@ -11,7 +11,7 @@ pdfMake.vfs = pdfFonts.vfs;
  */
 export const gerarInvoice = async (data: Invoice) => {
 
-  const description = 'Brazil Conilon Green Coffee - Crop: 2022/2023\nMATERIAL #4006772'; // ver com joao para mudar isso
+  //const description = 'Brazil Conilon Green Coffee - Crop: 2022/2023\nMATERIAL #4006772'; // ver com joao para mudar isso
   const logo = await getBase64ImageFromURL("@/../public/images/tristao.png");
   const singature = await getBase64ImageFromURL("@/../public/images/assinatura.png");
   const cnpj = data.FILIAL == 21 ? "27001247/0030-13" : "27001247/0037-90"
@@ -167,7 +167,7 @@ export const gerarInvoice = async (data: Invoice) => {
             [
               { text: "", border: [true, false, true, false] }, // borda esquerda e direita
               {
-                text: description,
+                text: data.DESCRIPTION,
                 colSpan: 3,
                 border: [true, true, true, true], // todas as bordas
                 style: 'tableData',
@@ -191,7 +191,7 @@ export const gerarInvoice = async (data: Invoice) => {
             [
               {},
               { text: pesoLiquidoSacasFormatado, alignment: 'center' },
-              { text: `306.23 ${data.COND_PAG}`, alignment: 'center' },
+              { text: `${data.PRECO_FORMATADO} ${data.COND_PAG}`, alignment: 'center' },
               { text: valorFormatado, alignment: 'center', border: [false, false, true, false] }, // borda direita
             ],
             [
