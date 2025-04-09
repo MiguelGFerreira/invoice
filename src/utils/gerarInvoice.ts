@@ -9,7 +9,7 @@ pdfMake.vfs = pdfFonts.vfs;
 /**
  * Função que gera a impressão de uma invoice em PDF.
  */
-export const gerarInvoice = async (data: Invoice) => {
+export const gerarInvoice = async (data: Invoice, showRFAText: boolean) => {
 
   //const description = 'Brazil Conilon Green Coffee - Crop: 2022/2023\nMATERIAL #4006772'; // ver com joao para mudar isso
   const logo = await getBase64ImageFromURL("@/../public/images/tristao.png");
@@ -19,6 +19,23 @@ export const gerarInvoice = async (data: Invoice) => {
   const pesoBrutoFormatado = new Intl.NumberFormat('en-us', {minimumFractionDigits: 2}).format(data.PESO_BRUTO)
   const pesoLiquidoFormatado = new Intl.NumberFormat('en-us', {minimumFractionDigits: 2}).format(data.PESO_LIQUIDO)
   const pesoLiquidoSacasFormatado = new Intl.NumberFormat('en-us', {minimumFractionDigits: 2}).format(data.PESO_LIQUIDO/1000)
+
+  const getRFAText = () => {
+    return showRFAText ? "RFA information is attached" : "";
+  }
+
+  const getDunText = () => {
+    const dunsMap: Record<number, string> = {
+      21: "12607156478 (DUNS#: 89-739-5620)",
+      20: "11118374886 (DUNS#: 91-142-9314)"
+    }
+
+    if(data.PASIDEST === "ESTADOS UNIDOS" || data.PASIDEST === "CANADA") {
+      return dunsMap[data.FILIAL];
+    }
+
+    return "";
+  }
 
   const getQuantityText = () => {
     /*
@@ -201,6 +218,27 @@ export const gerarInvoice = async (data: Invoice) => {
                   { text: `BL: ${data.BL}` },
                   { text: `D/D: ${formatarData(data.DATA_DUE, true)}` }
                 ],
+                colSpan: 3,
+                border: [false, false, true, false],  // borda direita
+              },
+              {},
+              {},
+            ],
+            [
+              { text: "", border: [true, false, true, false] }, // bordas esquerda e direita
+              {
+                text: getDunText(),
+                colSpan: 3,
+                border: [false, false, true, false],  // borda direita
+              },
+              {},
+              {},
+            ],
+            [
+              { text: "", border: [true, false, true, false] }, // bordas esquerda e direita
+              {
+                text: getRFAText(), // marcador em vermelho indicando que e rainforest
+                color: 'red',
                 colSpan: 3,
                 border: [false, false, true, false],  // borda direita
               },

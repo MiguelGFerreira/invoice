@@ -81,3 +81,7 @@ button {
 .formulario {
 	@apply grid grid-cols-3 gap-4;
 }
+
+.formulario-card {
+	@apply grid w-full gap-4;
+}

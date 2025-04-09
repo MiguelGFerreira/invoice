@@ -9,7 +9,7 @@ import CheckCircleIcon from "@/../public/icons/CheckCircleIcon";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import { formatarData } from "@/utils/functions"
 import Modal from "@/components/Modal";
-import { Field, Label, Radio, RadioGroup } from "@headlessui/react";
+import { Checkbox, Field, Label, Radio, RadioGroup } from "@headlessui/react";
 
 export default function Home() {
   const [filter, setFilter] = useState({
@@ -24,6 +24,7 @@ export default function Home() {
     unity: '',
     price: 0
   }]);
+  const [showRFAText, setShowRFAText] = useState<boolean>(false);
 
   const handleOpenModal = (invoiceId: number) => {
     const selected = invoices.find((inv) => inv.ID === invoiceId)
@@ -131,14 +132,15 @@ export default function Home() {
 
       {selectedInvoice && (
         <Modal isOpen={isModalOpen} closeModal={closeModal} title={"Invoice Selecionada"}>
-          <form onSubmit={(e) => { e.preventDefault(); gerarInvoice(selectedInvoice) }}>
+          <form onSubmit={(e) => { e.preventDefault(); gerarInvoice(selectedInvoice, showRFAText) }} className="formulario-card">
             <div className="space-y-4">
               <div>
-                <label htmlFor="description">Description</label>
-                <input type="text" id="description" onChange={(desc) => setSelectedInvoice({ ...selectedInvoice, DESCRIPTION: desc.target.value})} />
+                <label htmlFor="description">Descrição</label>
+                <input type="text" id="description" onChange={(desc) => setSelectedInvoice({ ...selectedInvoice, DESCRIPTION: desc.target.value })} />
               </div>
             </div>
 
+            <label>Preço</label>
             <RadioGroup
               value={selectedInvoice.COND_PAG}
               onChange={(value) => setSelectedInvoice({ ...selectedInvoice, COND_PAG: value })}
@@ -153,13 +155,25 @@ export default function Home() {
                   <div className="flex w-full items-center justify-between">
                     <div className="text-sm/6">
                       <p className="group-data-[checked]:text-white">{price.unity}</p>
-                      <input className="text-black/70" type="text" defaultValue={price.price} onChange={(desc) => setSelectedInvoice({ ...selectedInvoice, PRECO_FORMATADO: desc.target.value})} />
+                      <input className="text-black/70" type="text" defaultValue={price.price} onChange={(desc) => setSelectedInvoice({ ...selectedInvoice, PRECO_FORMATADO: desc.target.value })} />
                     </div>
                     <CheckCircleIcon className="size-6 absolute top-4 right-4 fill-white opacity-0 transition group-data-[checked]:opacity-100" />
                   </div>
                 </Radio>
               ))}
             </RadioGroup>
+
+            <label>Mostra texto RFA</label>
+            <Checkbox
+              checked={showRFAText}
+              onChange={setShowRFAText}
+              className="group block size-4 rounded border bg-white data-[checked]:bg-[#003B2F]"
+            >
+              {/* Checkmark icon */}
+              <svg className="stroke-white opacity-0 group-data-[checked]:opacity-100" viewBox="0 0 14 14" fill="none">
+                <path d="M3 8L6 11L11 3.5" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </Checkbox>
 
             <div className="mt-6 flex justify-end">
               <button type="submit">
