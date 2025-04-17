@@ -44,4 +44,5 @@ export interface Invoice {
 	PRECO_FORMATADO: string,
 	//EE8_QTDEM1: number,
 	QUALIDADE: string,
+	MARCACOES: string,
 }

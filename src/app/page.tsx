@@ -62,7 +62,8 @@ export default function Home() {
         { unity: 'USC/LB', price: selectedInvoice.PRECO_CENT_LIB },
         { unity: 'USD/Mton', price: selectedInvoice.PRECO_TONELADAS },
         { unity: 'USD/50KG', price: selectedInvoice.PRECO_50KG }
-      ])
+      ]);
+      //setSelectedInvoice({ ...selectedInvoice, PRECO_FORMATADO: `${selectedInvoice.PRECO_60KG}` })
     }
   }, [selectedInvoice])
 
@@ -143,7 +144,17 @@ export default function Home() {
             <label>Preço</label>
             <RadioGroup
               value={selectedInvoice.COND_PAG}
-              onChange={(value) => setSelectedInvoice({ ...selectedInvoice, COND_PAG: value })}
+              //onChange={(value) => setSelectedInvoice({ ...selectedInvoice, COND_PAG: value })}
+              onChange={(value) => {
+                const selectedPrice = prices.find((p) => p.unity === value);
+                if (selectedPrice) {
+                  setSelectedInvoice({
+                    ...selectedInvoice,
+                    COND_PAG: selectedPrice.unity,
+                    PRECO_FORMATADO: String(selectedPrice.price),
+                  })
+                }
+              }}
               className="grid grid-cols-2 gap-4"
             >
               {prices.map((price) => (
@@ -167,7 +178,7 @@ export default function Home() {
             <Checkbox
               checked={showRFAText}
               onChange={setShowRFAText}
-              className="group block size-4 rounded border bg-white data-[checked]:bg-[#003B2F]"
+              className="group block size-4 rounded border bg-gray-200 data-[checked]:bg-[#003B2F]"
             >
               {/* Checkmark icon */}
               <svg className="stroke-white opacity-0 group-data-[checked]:opacity-100" viewBox="0 0 14 14" fill="none">

@@ -15,10 +15,10 @@ export const gerarInvoice = async (data: Invoice, showRFAText: boolean) => {
   const logo = await getBase64ImageFromURL("@/../public/images/tristao.png");
   const singature = await getBase64ImageFromURL("@/../public/images/assinatura.png");
   const cnpj = data.FILIAL == 21 ? "27001247/0030-13" : "27001247/0037-90"
-  const valorFormatado = new Intl.NumberFormat('en-us', {minimumFractionDigits: 2}).format(data.VALOR_INVOICE)
-  const pesoBrutoFormatado = new Intl.NumberFormat('en-us', {minimumFractionDigits: 2}).format(data.PESO_BRUTO)
-  const pesoLiquidoFormatado = new Intl.NumberFormat('en-us', {minimumFractionDigits: 2}).format(data.PESO_LIQUIDO)
-  const pesoLiquidoSacasFormatado = new Intl.NumberFormat('en-us', {minimumFractionDigits: 2}).format(data.PESO_LIQUIDO/1000)
+  const valorFormatado = new Intl.NumberFormat('pt-BR', {minimumFractionDigits: 2}).format(data.VALOR_INVOICE)
+  const pesoBrutoFormatado = new Intl.NumberFormat('pt-BR', {minimumFractionDigits: 2}).format(data.PESO_BRUTO)
+  const pesoLiquidoFormatado = new Intl.NumberFormat('pt-BR', {minimumFractionDigits: 2}).format(data.PESO_LIQUIDO)
+  const pesoLiquidoSacasFormatado = new Intl.NumberFormat('pt-BR', {minimumFractionDigits: 2}).format(data.PESO_LIQUIDO/1000)
 
   const getRFAText = () => {
     return showRFAText ? "RFA information is attached" : "";
@@ -52,12 +52,22 @@ export const gerarInvoice = async (data: Invoice, showRFAText: boolean) => {
 
     // agora bonito
     const embalagensMap: Record<string, string> = {
-      BULK: `${data.SACAS}\nSCS\nIN\nBULK`,
+      BULK: `${data.SACAS}\nIN BULK`,
       "BIG BAG": `${data.QTD_EMB}\nBIG BAGS`
     }
 
-    return embalagensMap[data.EMBALAGEM] || `${data.QTD_EMB}\nSCS\nIN\nJUTE` // vai olhar no hashmap se existe a embalagem la. Se nao existir, vai retornar os dados em sacas in jute
+    return embalagensMap[data.EMBALAGEM] || `${data.QTD_EMB}\nIN JUTE` // vai olhar no hashmap se existe a embalagem la. Se nao existir, vai retornar os dados em sacas in jute
   }
+
+  const oicsUnicos = Array.from(
+    new Set(
+      data.OIC
+        .split(",")                // separa pelos vírgulas
+        .map((oic) => oic.trim()) // remove espaços em branco
+    )
+  );
+  const oicsFinal = oicsUnicos.join(", ");
+  //console.log(oicsFinal);
 
   const docDefinition = {
     pageSize: 'A4',
@@ -90,7 +100,7 @@ export const gerarInvoice = async (data: Invoice, showRFAText: boolean) => {
       {
         style: 'tableMain',
         table: {
-          widths: [120, '*', '*'],
+          widths: [140, '*', '*'],
           body: [
             [
               { text: 'INVOICE NUMBER', style: 'tableHeader', alignment: 'center', border: [true, true, true, true], }, // todas as bordas
@@ -111,23 +121,23 @@ export const gerarInvoice = async (data: Invoice, showRFAText: boolean) => {
               { text: `US ${valorFormatado}`, style: 'tableData', alignment: 'center', border: [true, true, true, true], },  // todas as bordas
             ],
             [
-              { text: `Shipped per s/s: ${data.SHIPPED_PER}`, style: 'tableData', colSpan: 2, border: [true, false, false, false], }, // borda esquerda
+              { text: `Shipped per s/s:           ${data.SHIPPED_PER}`, style: 'tableData', colSpan: 2, border: [true, false, false, false], }, // borda esquerda
               { text: '', style: 'tableData' },
-              { text: `Our sale Nº: ${data.NUMERO_EMBARQUE}`, style: 'tableData', border: [false, false, true, false], },  // borda direita
+              { text: `Our sale Nº:                 ${data.NUMERO_EMBARQUE}`, style: 'tableData', border: [false, false, true, false], },  // borda direita
             ],
             [
-              { text: `Shipped from: ${data.PORTO_ORIGEM}`, style: 'tableData', colSpan: 2,  border: [true, false, false, false], }, // borda esquerda
+              { text: `Shipped from:               ${data.PORTO_ORIGEM}`, style: 'tableData', colSpan: 2,  border: [true, false, false, false], }, // borda esquerda
               { text: '', style: 'tableData' },
-              { text: `Buyers ctr Nº: PO ${data.PO}`, style: 'tableData', border: [false, false, true, false], }, // borda direita
+              { text: `Buyers ctr Nº:              ${data.REF_IMPORTACAO}`, style: 'tableData', border: [false, false, true, false], }, // borda direita
             ],
             [
-              { text: `Destination: ${data.LOCAL_DESTINO}`, style: 'tableData', colSpan: 2,  border: [true, false, false, false], },  // borda esquerda
+              { text: `Destination:                   ${data.LOCAL_DESTINO}`, style: 'tableData', colSpan: 2,  border: [true, false, false, false], },  // borda esquerda
               { text: '', style: 'tableData' },
-              { text: `Payment Conditions: ${getPaymentTerm(data.CONDICAO_PAGAMENTO)}`, style: 'tableData', border: [false, false, true, false], }, // borda direita
+              { text: `Payment Conditions:  ${getPaymentTerm(data.CONDICAO_PAGAMENTO)}`, style: 'tableData', border: [false, false, true, false], }, // borda direita
             ],
             [
               {
-                text: `For Account and Risk ${data.CLIENTE}`,
+                text: `For Account and Risk:  ${data.CLIENTE}`,
                 colSpan: 3,
                 border: [true, false, true, false],  // borda esquerda
                 style: 'tableData',
@@ -167,7 +177,7 @@ export const gerarInvoice = async (data: Invoice, showRFAText: boolean) => {
       {
         style: 'tableMain',
         table: {
-          widths: [120, '*', '*', '*'],
+          widths: [140, '*', '*', '*'],
           body: [
             [
               { text: 'QUANTITY', style: 'tableHeader', alignment: 'center', border: [true, true, true, true] },  // todas as bordas
@@ -216,7 +226,7 @@ export const gerarInvoice = async (data: Invoice, showRFAText: boolean) => {
               {
                 stack: [
                   { text: `BL: ${data.BL}` },
-                  { text: `D/D: ${formatarData(data.DATA_DUE, true)}` }
+                  { text: `D/D: ${formatarData(data.DATA_EMBARQUE, true)}` }
                 ],
                 colSpan: 3,
                 border: [false, false, true, false],  // borda direita
@@ -249,8 +259,8 @@ export const gerarInvoice = async (data: Invoice, showRFAText: boolean) => {
               { text: "", border: [true, false, true, false] }, // borda direita
               {
                 stack: [
-                  { text: `GROSS WEIGHT: ${pesoBrutoFormatado} Kgs` },
-                  { text: `NET WEIGHT: ${pesoLiquidoFormatado} Kgs` },
+                  { text: `GROSS WEIGHT:  ${pesoBrutoFormatado} Kgs` },
+                  { text: `NET WEIGHT:       ${pesoLiquidoFormatado} Kgs` },
                 ],
                 colSpan: 3,
                 border: [false, false, true, false],  // borda direita
@@ -270,7 +280,7 @@ export const gerarInvoice = async (data: Invoice, showRFAText: boolean) => {
       {
         style: 'tableMain',
         table: {
-          widths: [120, '*', '*'],
+          widths: [140, '*', 100],
           body: [
             [
               { text: 'MARKS', style: 'tableHeader', border: [true, true, true, true] },
@@ -280,21 +290,22 @@ export const gerarInvoice = async (data: Invoice, showRFAText: boolean) => {
             [
               {
                 stack: [
-                  { text: 'CAFÉ DO BRASIL', alignment: 'center' },
                   { text: 'TRISTÃO', alignment: 'center' },
                   { text: data.NUMERO_EMBARQUE, alignment: 'center' },
-                  { text: data.OIC, alignment: 'center' },
+                  { text: data.MARCACOES, alignment: 'center' },
+                  { text: oicsFinal, alignment: 'center' },
                 ],
                 border: [true, false, true, true],  // bordas esquerda, direita e inferior
               },
               {
                 text:
-                  'INTERMEDIARY BANK: JPMORGAN CHASE BANK - NY\n' +
-                  'SWIFT: CHASUS33\n' +
-                  'ACCOUNT: 123456-7890\n' +
-                  'BENEFICIARY BANK: BANCO DO BRASIL S.A.\n' +
-                  'SWIFT: BRASXXXXX\n' +
-                  'ACCOUNT: 270120123456-7',
+                  'INTERMEDIARY BANK: JPMORGAN CHASE BANK, N.A.\n' +
+                  'SWIFT CODE: CHASUS33\n' +
+                  'BENEFICIARY BANK: ITAÚ UNIBANCO S.A.\n' +
+                  'SWIFT CODE: ITAUBRSP\n' +
+                  'FINAL BENEFICIARY: TRISTAO COMPANHIA DE COMERCIO EXTERIOR\n' +
+                  'BRANCH NR. 0070; ACCOUNT NR. 0012237-9\n' +
+                  'IBAN: BR66 6070 1190 0007 0000 0122 379C 1',
                 style: 'tableData',
                 border: [true, false, true, true],  // bordas esquerda, direita e inferior
               },
@@ -353,7 +364,7 @@ export const gerarInvoice = async (data: Invoice, showRFAText: boolean) => {
         bold: true,
       },
       tableMain: {
-        fontSize: 9,
+        fontSize: 8,
       },
       tableHeader: {
         bold: true,

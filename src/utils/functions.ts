@@ -28,6 +28,7 @@ const paymentTermsMap: Record<string, string> = {
 	"60D": "NET 60 DAYS",
 	"45D": "NET 45 DAYS",
 	"30D": "NET 30 DAYS",
+	"CAD": "CAD",
 	"pp": "PREPAID"
 }
 
