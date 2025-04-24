@@ -118,7 +118,7 @@ export const gerarInvoice = async (data: Invoice, showRFAText: boolean) => {
                 alignment: 'center',
                 border: [true, true, true, true],  // todas as bordas
               },
-              { text: `US ${valorFormatado}`, style: 'tableData', alignment: 'center', border: [true, true, true, true], },  // todas as bordas
+              { text: `US$ ${valorFormatado}`, style: 'tableData', alignment: 'center', border: [true, true, true, true], },  // todas as bordas
             ],
             [
               { text: `Shipped per s/s:           ${data.SHIPPED_PER}`, style: 'tableData', colSpan: 2, border: [true, false, false, false], }, // borda esquerda
@@ -137,7 +137,7 @@ export const gerarInvoice = async (data: Invoice, showRFAText: boolean) => {
             ],
             [
               {
-                text: `For Account and Risk:  ${data.CLIENTE}`,
+                text: `For Account and Risk: ${data.CLIENTE}`,
                 colSpan: 3,
                 border: [true, false, true, false],  // borda esquerda
                 style: 'tableData',
@@ -150,6 +150,16 @@ export const gerarInvoice = async (data: Invoice, showRFAText: boolean) => {
                 text: data.ENDERECO_CLIENTE,
                 colSpan: 3,
                 border: [true, false, true, false],  // borda esquerda
+                style: 'tableDataEnd',
+              },
+              {},
+              {},
+            ],
+            [
+              {
+                text: `Through Bank:               ${data.BCO_CLIENTE}`,
+                colSpan: 3,
+                border: [true, false, true, false],  // borda esquerda
                 style: 'tableData',
               },
               {},
@@ -157,10 +167,10 @@ export const gerarInvoice = async (data: Invoice, showRFAText: boolean) => {
             ],
             [
               {
-                text: 'Through Bank:',
+                text: data.END_BCO_CLIENTE,
                 colSpan: 3,
                 border: [true, false, true, false],  // borda esquerda
-                style: 'tableData',
+                style: 'tableDataEnd',
               },
               {},
               {},
@@ -373,6 +383,9 @@ export const gerarInvoice = async (data: Invoice, showRFAText: boolean) => {
       },
       tableData: {
         margin: [3, 3, 3, 3],
+      },
+      tableDataEnd: {
+        margin: [83, 3, 3, 3],
       },
       footerText: {
         fontSize: 7,

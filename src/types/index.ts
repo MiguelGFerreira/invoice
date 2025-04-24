@@ -45,4 +45,6 @@ export interface Invoice {
 	//EE8_QTDEM1: number,
 	QUALIDADE: string,
 	MARCACOES: string,
+	BCO_CLIENTE: string,
+	END_BCO_CLIENTE: string,
 }

@@ -13,7 +13,7 @@ import { Checkbox, Field, Label, Radio, RadioGroup } from "@headlessui/react";
 
 export default function Home() {
   const [filter, setFilter] = useState({
-    dateStart: new Date(new Date().setDate(new Date().getDate() - 30)).toISOString().split('T')[0],
+    dateStart: new Date(new Date().setDate(new Date().getDate() - 5)).toISOString().split('T')[0],
     dateEnd: ""
   });
   const [invoices, setInvoices] = useState<Invoice[]>([]);
