@@ -300,8 +300,6 @@ export const gerarInvoice = async (data: Invoice, showRFAText: boolean) => {
             [
               {
                 stack: [
-                  { text: 'TRISTÃO', alignment: 'center' },
-                  { text: data.NUMERO_EMBARQUE, alignment: 'center' },
                   { text: data.MARCACOES, alignment: 'center' },
                   { text: oicsFinal, alignment: 'center' },
                 ],
