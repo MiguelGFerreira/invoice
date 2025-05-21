@@ -9,7 +9,7 @@ import CheckCircleIcon from "@/../public/icons/CheckCircleIcon";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import { formatarData } from "@/utils/functions"
 import Modal from "@/components/Modal";
-import { Checkbox, Field, Label, Radio, RadioGroup } from "@headlessui/react";
+import { Checkbox, Radio, RadioGroup, Select } from "@headlessui/react";
 
 export default function Home() {
   const [filter, setFilter] = useState({
@@ -25,6 +25,8 @@ export default function Home() {
     price: 0
   }]);
   const [showRFAText, setShowRFAText] = useState<boolean>(false);
+  
+  let invoiceDate = "date-now";
 
   const handleOpenModal = (invoiceId: number) => {
     const selected = invoices.find((inv) => inv.ID === invoiceId)
@@ -133,7 +135,7 @@ export default function Home() {
 
       {selectedInvoice && (
         <Modal isOpen={isModalOpen} closeModal={closeModal} title={"Invoice Selecionada"}>
-          <form onSubmit={(e) => { e.preventDefault(); gerarInvoice(selectedInvoice, showRFAText) }} className="formulario-card">
+          <form onSubmit={(e) => { e.preventDefault(); gerarInvoice(selectedInvoice, showRFAText, invoiceDate) }} className="formulario-card">
             <div className="space-y-4">
               <div>
                 <label htmlFor="description">Descrição</label>
@@ -173,6 +175,12 @@ export default function Home() {
                 </Radio>
               ))}
             </RadioGroup>
+
+            <label>Data da Invoice</label>
+            <Select name="invoice-date" onChange={(e) => {invoiceDate = e.target.value}}>
+              <option value="date-now">Data atual</option>
+              <option value="date-bl">Data do BL</option>
+            </Select>
 
             <label>Mostra texto RFA</label>
             <Checkbox

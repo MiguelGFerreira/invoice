@@ -9,7 +9,7 @@ pdfMake.vfs = pdfFonts.vfs;
 /**
  * Função que gera a impressão de uma invoice em PDF.
  */
-export const gerarInvoice = async (data: Invoice, showRFAText: boolean) => {
+export const gerarInvoice = async (data: Invoice, showRFAText: boolean, invoiceDate: string) => {
 
   //const description = 'Brazil Conilon Green Coffee - Crop: 2022/2023\nMATERIAL #4006772'; // ver com joao para mudar isso
   const logo = await getBase64ImageFromURL("@/../public/images/tristao.png");
@@ -37,6 +37,14 @@ export const gerarInvoice = async (data: Invoice, showRFAText: boolean) => {
     return "";
   }
 
+  const getInvoiceDate = () => {
+    if (invoiceDate === "date-now") {
+      return formatarData(new Date().toISOString(), true)
+    } else {
+      return formatarData(data.DATA_EMBARQUE, true)
+    }
+  }
+
   const getQuantityText = () => {
     /*
     if (data.EMBALAGEM === "BULK") {
@@ -56,7 +64,7 @@ export const gerarInvoice = async (data: Invoice, showRFAText: boolean) => {
       "BIG BAG": `${data.QTD_EMB}\nBIG BAGS`
     }
 
-    return embalagensMap[data.EMBALAGEM] || `${data.QTD_EMB}\nIN JUTE` // vai olhar no hashmap se existe a embalagem la. Se nao existir, vai retornar os dados em sacas in jute
+    return embalagensMap[data.EMBALAGEM] || `${data.SACAS}\nIN JUTE` // vai olhar no hashmap se existe a embalagem la. Se nao existir, vai retornar os dados em sacas in jute
   }
 
   const oicsUnicos = Array.from(
@@ -112,7 +120,7 @@ export const gerarInvoice = async (data: Invoice, showRFAText: boolean) => {
               {
                 stack: [
                   { text: data.PORTO_ORIGEM },
-                  { text: formatarData(data.DATA_EMBARQUE,true) },
+                  { text: getInvoiceDate() },
                 ],
                 style: 'tableData',
                 alignment: 'center',
