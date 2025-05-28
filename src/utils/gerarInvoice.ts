@@ -15,10 +15,10 @@ export const gerarInvoice = async (data: Invoice, showRFAText: boolean, invoiceD
   const logo = await getBase64ImageFromURL("@/../public/images/tristao.png");
   const singature = await getBase64ImageFromURL("@/../public/images/assinatura.png");
   const cnpj = data.FILIAL == 21 ? "27001247/0030-13" : "27001247/0037-90"
-  const valorFormatado = new Intl.NumberFormat('pt-BR', {minimumFractionDigits: 2}).format(data.VALOR_INVOICE)
-  const pesoBrutoFormatado = new Intl.NumberFormat('pt-BR', {minimumFractionDigits: 2}).format(data.PESO_BRUTO)
-  const pesoLiquidoFormatado = new Intl.NumberFormat('pt-BR', {minimumFractionDigits: 2}).format(data.PESO_LIQUIDO)
-  const pesoLiquidoSacasFormatado = new Intl.NumberFormat('pt-BR', {minimumFractionDigits: 2}).format(data.PESO_LIQUIDO/1000)
+  const valorFormatado = new Intl.NumberFormat('pt-BR', { minimumFractionDigits: 2 }).format(data.VALOR_INVOICE)
+  const pesoBrutoFormatado = new Intl.NumberFormat('pt-BR', { minimumFractionDigits: 2 }).format(data.PESO_BRUTO)
+  const pesoLiquidoFormatado = new Intl.NumberFormat('pt-BR', { minimumFractionDigits: 2 }).format(data.PESO_LIQUIDO)
+  const pesoLiquidoSacasFormatado = new Intl.NumberFormat('pt-BR', { minimumFractionDigits: 2 }).format(data.PESO_LIQUIDO / 1000)
 
   const getRFAText = () => {
     return showRFAText ? "RFA information is attached" : "";
@@ -30,7 +30,7 @@ export const gerarInvoice = async (data: Invoice, showRFAText: boolean, invoiceD
       20: "11118374886 (DUNS#: 91-142-9314)"
     }
 
-    if(data.PASIDEST === "ESTADOS UNIDOS" || data.PASIDEST === "CANADA") {
+    if (data.PASIDEST === "ESTADOS UNIDOS" || data.PASIDEST === "CANADA") {
       return dunsMap[data.FILIAL];
     }
 
@@ -67,14 +67,18 @@ export const gerarInvoice = async (data: Invoice, showRFAText: boolean, invoiceD
     return embalagensMap[data.EMBALAGEM] || `${data.SACAS}\nIN JUTE` // vai olhar no hashmap se existe a embalagem la. Se nao existir, vai retornar os dados em sacas in jute
   }
 
-  const oicsUnicos = Array.from(
+  // Garante que data.OIC seja string (ou string vazia)
+  const rawOIC = typeof data.OIC === 'string' ? data.OIC : '';
+
+  // Separa por vírgula, faz trim, remove itens vazios, deduplica e junta de novo
+  const oicsFinal = Array.from(
     new Set(
-      data.OIC
-        .split(",")                // separa pelos vírgulas
-        .map((oic) => oic.trim()) // remove espaços em branco
+      rawOIC
+        .split(',')
+        .map(oic => oic.trim())
+        .filter(oic => oic.length > 0)
     )
-  );
-  const oicsFinal = oicsUnicos.join(", ");
+  ).join(', ');
   //console.log(oicsFinal);
 
   const docDefinition = {
@@ -134,12 +138,12 @@ export const gerarInvoice = async (data: Invoice, showRFAText: boolean, invoiceD
               { text: `Our sale Nº:                 ${data.NUMERO_EMBARQUE}`, style: 'tableData', border: [false, false, true, false], },  // borda direita
             ],
             [
-              { text: `Shipped from:               ${data.PORTO_ORIGEM}`, style: 'tableData', colSpan: 2,  border: [true, false, false, false], }, // borda esquerda
+              { text: `Shipped from:               ${data.PORTO_ORIGEM}`, style: 'tableData', colSpan: 2, border: [true, false, false, false], }, // borda esquerda
               { text: '', style: 'tableData' },
               { text: `Buyers ctr Nº:              ${data.REF_IMPORTACAO}`, style: 'tableData', border: [false, false, true, false], }, // borda direita
             ],
             [
-              { text: `Destination:                   ${data.LOCAL_DESTINO}`, style: 'tableData', colSpan: 2,  border: [true, false, false, false], },  // borda esquerda
+              { text: `Destination:                   ${data.LOCAL_DESTINO}`, style: 'tableData', colSpan: 2, border: [true, false, false, false], },  // borda esquerda
               { text: '', style: 'tableData' },
               { text: `Payment Conditions:  ${getPaymentTerm(data.CONDICAO_PAGAMENTO)}`, style: 'tableData', border: [false, false, true, false], }, // borda direita
             ],
