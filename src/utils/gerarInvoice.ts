@@ -318,14 +318,20 @@ export const gerarInvoice = async (data: Invoice, showRFAText: boolean, invoiceD
                 border: [true, false, true, true],  // bordas esquerda, direita e inferior
               },
               {
-                text:
-                  'INTERMEDIARY BANK: JPMORGAN CHASE BANK, N.A.\n' +
-                  'SWIFT CODE: CHASUS33\n' +
-                  'BENEFICIARY BANK: ITAÚ UNIBANCO S.A.\n' +
-                  'SWIFT CODE: ITAUBRSP\n' +
-                  'FINAL BENEFICIARY: TRISTAO COMPANHIA DE COMERCIO EXTERIOR\n' +
-                  'BRANCH NR. 0070; ACCOUNT NR. 0012237-9\n' +
-                  'IBAN: BR66 6070 1190 0007 0000 0122 379C 1',
+                stack: [
+                  { text: 'Payment Conditions', alignment: 'center' },
+                  {
+                    text:
+                      'INTERMEDIARY BANK: JPMORGAN CHASE BANK, N.A.\n' +
+                      'SWIFT CODE: CHASUS33\n' +
+                      'BENEFICIARY BANK: ITAÚ UNIBANCO S.A.\n' +
+                      'SWIFT CODE: ITAUBRSP\n' +
+                      'FINAL BENEFICIARY: TRISTAO COMPANHIA DE COMERCIO EXTERIOR\n' +
+                      'BRANCH NR. 0070; ACCOUNT NR. 0012237-9\n' +
+                      'IBAN: BR66 6070 1190 0007 0000 0122 379C 1',
+                      alignment: 'left'
+                  }
+                ],
                 style: 'tableData',
                 border: [true, false, true, true],  // bordas esquerda, direita e inferior
               },
