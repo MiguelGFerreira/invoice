@@ -30,7 +30,7 @@ export const gerarInvoice = async (data: Invoice, showRFAText: boolean, invoiceD
       20: "11118374886 (DUNS#: 91-142-9314)"
     }
 
-    if (data.PASIDEST === "ESTADOS UNIDOS" || data.PASIDEST === "CANADA") {
+    if (data.PAISDEST === "ESTADOS UNIDOS" || data.PAISDEST === "CANADA") {
       return dunsMap[data.FILIAL];
     }
 
@@ -329,7 +329,7 @@ export const gerarInvoice = async (data: Invoice, showRFAText: boolean, invoiceD
                       'FINAL BENEFICIARY: TRISTAO COMPANHIA DE COMERCIO EXTERIOR\n' +
                       'BRANCH NR. 0070; ACCOUNT NR. 0012237-9\n' +
                       'IBAN: BR66 6070 1190 0007 0000 0122 379C 1',
-                      alignment: 'left'
+                    alignment: 'left'
                   }
                 ],
                 style: 'tableData',

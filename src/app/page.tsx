@@ -10,6 +10,7 @@ import LoadingSpinner from "@/components/LoadingSpinner";
 import { formatarData } from "@/utils/functions"
 import Modal from "@/components/Modal";
 import { Checkbox, Radio, RadioGroup, Select } from "@headlessui/react";
+import { gerarRE } from "@/utils/gerarRE";
 
 export default function Home() {
   const [filter, setFilter] = useState({
@@ -96,6 +97,7 @@ export default function Home() {
           </button>
         </form>
       </section>
+      {/* <button onClick={() => gerarRE()}>Gerar RE gemini</button> */}
 
       {loading ? <LoadingSpinner /> :
         <table className="grupotristao">
@@ -117,7 +119,8 @@ export default function Home() {
           <tbody>
             {invoices.map((invoice) => (
               <tr key={invoice.ID}>
-                <td><DocumentCurrency onClick={() => handleOpenModal(invoice.ID)} className="cursor-pointer" /></td>
+                {/* <td><DocumentCurrency onClick={() => handleOpenModal(invoice.ID)} className="cursor-pointer" /></td> */}
+                <td><DocumentCurrency onClick={() => gerarRE(invoice)} className="cursor-pointer" /></td>
                 <td>{invoice.NUMERO_INVOICE}</td>
                 <td>{invoice.NUMERO_EMBARQUE}</td>
                 <td>{invoice.FILIAL}</td>
