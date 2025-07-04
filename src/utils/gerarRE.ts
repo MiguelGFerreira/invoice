@@ -85,7 +85,7 @@ export const gerarRE = async (data: Invoice) => {
             [
               { text: 'DESCRIÇÃO', style: 'label' },
               {
-                text: "'Café cru, não descafeinado em grão, arábica cob 4 para melhor, peneiras 16 e acima, bebida dura",
+                text: data.DESCRIPTION,
                 style: 'value'
               }
             ],

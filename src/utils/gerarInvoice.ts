@@ -319,7 +319,7 @@ export const gerarInvoice = async (data: Invoice, showRFAText: boolean, invoiceD
               },
               {
                 stack: [
-                  { text: 'Payment Conditions', alignment: 'center' },
+                  { text: 'Payment Instructions', alignment: 'center' },
                   {
                     text:
                       'INTERMEDIARY BANK: JPMORGAN CHASE BANK, N.A.\n' +

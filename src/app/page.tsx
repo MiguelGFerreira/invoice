@@ -97,7 +97,6 @@ export default function Home() {
           </button>
         </form>
       </section>
-      {/* <button onClick={() => gerarRE()}>Gerar RE gemini</button> */}
 
       {loading ? <LoadingSpinner /> :
         <table className="grupotristao">
@@ -119,8 +118,8 @@ export default function Home() {
           <tbody>
             {invoices.map((invoice) => (
               <tr key={invoice.ID}>
-                {/* <td><DocumentCurrency onClick={() => handleOpenModal(invoice.ID)} className="cursor-pointer" /></td> */}
-                <td><DocumentCurrency onClick={() => gerarRE(invoice)} className="cursor-pointer" /></td>
+                <td><DocumentCurrency onClick={() => handleOpenModal(invoice.ID)} className="cursor-pointer" /></td>
+                {/* <td><DocumentCurrency onClick={() => gerarRE(invoice)} className="cursor-pointer" /></td> */}
                 <td>{invoice.NUMERO_INVOICE}</td>
                 <td>{invoice.NUMERO_EMBARQUE}</td>
                 <td>{invoice.FILIAL}</td>
@@ -197,9 +196,12 @@ export default function Home() {
               </svg>
             </Checkbox>
 
-            <div className="mt-6 flex justify-end">
+            <div className="mt-6 flex justify-between">
+              <button type="button" onClick={() => gerarRE(selectedInvoice)}>
+                Gerar RE
+              </button>
               <button type="submit">
-                Gerar
+                Gerar Invoice
               </button>
             </div>
           </form>
