@@ -9,7 +9,7 @@ import CheckCircleIcon from "@/../public/icons/CheckCircleIcon";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import { formatarData } from "@/utils/functions"
 import Modal from "@/components/Modal";
-import { Checkbox, Radio, RadioGroup, Select } from "@headlessui/react";
+import { Checkbox, Radio, RadioGroup, Select, } from "@headlessui/react";
 import { gerarRE } from "@/utils/gerarRE";
 
 export default function Home() {
@@ -26,7 +26,7 @@ export default function Home() {
     price: 0
   }]);
   const [showRFAText, setShowRFAText] = useState<boolean>(false);
-  
+
   let invoiceDate = "date-now";
 
   const handleOpenModal = (invoiceId: number) => {
@@ -144,7 +144,6 @@ export default function Home() {
                 <input type="text" id="description" onChange={(desc) => setSelectedInvoice({ ...selectedInvoice, DESCRIPTION: desc.target.value })} />
               </div>
             </div>
-
             <label>Preço</label>
             <RadioGroup
               value={selectedInvoice.COND_PAG}
@@ -179,7 +178,7 @@ export default function Home() {
             </RadioGroup>
 
             <label>Data da Invoice</label>
-            <Select name="invoice-date" onChange={(e) => {invoiceDate = e.target.value}}>
+            <Select name="invoice-date" onChange={(e) => { invoiceDate = e.target.value }}>
               <option value="date-now">Data atual</option>
               <option value="date-bl">Data do BL</option>
             </Select>
@@ -195,6 +194,9 @@ export default function Home() {
                 <path d="M3 8L6 11L11 3.5" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
               </svg>
             </Checkbox>
+
+            <label htmlFor="re_obs">Observação (RE)</label>
+            <textarea name="re_obs" rows={5} id="re_obs" onChange={(obs) => setSelectedInvoice({ ...selectedInvoice, OBSERVACAO: obs.target.value })} />
 
             <div className="mt-6 flex justify-between">
               <button type="button" onClick={() => gerarRE(selectedInvoice)}>

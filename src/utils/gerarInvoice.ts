@@ -312,8 +312,9 @@ export const gerarInvoice = async (data: Invoice, showRFAText: boolean, invoiceD
             [
               {
                 stack: [
+                  { text: data.MARCACOES2, alignment: 'center' },
+                  // { text: oicsFinal, alignment: 'center' },
                   { text: data.MARCACOES, alignment: 'center' },
-                  { text: oicsFinal, alignment: 'center' },
                 ],
                 border: [true, false, true, true],  // bordas esquerda, direita e inferior
               },

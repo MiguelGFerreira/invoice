@@ -109,8 +109,8 @@ export const gerarRE = async (data: Invoice) => {
               { text: 'MARCAÇÃO', style: 'label' },
               {
                 stack: [
+                  { text: data.MARCACOES2 },
                   { text: data.MARCACOES },
-                  { text: data.OIC },
                   { text: `${getAlchemyText()} a ${data.SACAS} sacas de 60kg` }
                 ],
                 style: 'label'
@@ -118,7 +118,7 @@ export const gerarRE = async (data: Invoice) => {
             ],
             [
               { text: 'OBSERVAÇÕES', style: 'label' },
-              { text: '', style: 'label' }
+              { text: data.OBSERVACAO, style: 'label' }
             ],
           ],
         },

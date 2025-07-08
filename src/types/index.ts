@@ -48,6 +48,8 @@ export interface Invoice {
 	PRECO_FORMATADO: string,
 	QUALIDADE: string,
 	MARCACOES: string,
+	MARCACOES2: string,
 	BCO_CLIENTE: string,
 	END_BCO_CLIENTE: string,
+	OBSERVACAO: string,
 }
