@@ -1,9 +1,9 @@
 //import axios from "axios";
 
-//const API_URL = "http://localhost:8000"
-const API_URL = "http://10.0.73.216:83/invoices/express-invoice"
+const API_URL = "http://localhost:8000"
+// const API_URL = "http://10.0.73.216:83/invoices/express-invoice"
 
-export const getInvoices = async (filters: { dateStart?: string, dateEnd?: string }) => {
+export const getInvoices = async (filters: { dateStart?: string, dateEnd?: string, pedido?: string }) => {
 	const query = new URLSearchParams();
 
 	if (filters.dateStart) {
@@ -12,6 +12,10 @@ export const getInvoices = async (filters: { dateStart?: string, dateEnd?: strin
 
 	if (filters.dateEnd) {
 		query.append('dateEnd', filters.dateEnd);
+	}
+	
+	if (filters.pedido) {
+		query.append('pedido', filters.pedido);
 	}
 
 	try {

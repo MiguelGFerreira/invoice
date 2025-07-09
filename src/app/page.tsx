@@ -14,11 +14,12 @@ import { gerarRE } from "@/utils/gerarRE";
 
 export default function Home() {
   const [filter, setFilter] = useState({
-    dateStart: new Date(new Date().setDate(new Date().getDate() - 5)).toISOString().split('T')[0],
-    dateEnd: ""
+    dateStart: "",
+    dateEnd: "",
+    pedido: ""
   });
   const [invoices, setInvoices] = useState<Invoice[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedInvoice, setSelectedInvoice] = useState<Invoice | null>(null);
   const [prices, setPrices] = useState([{
@@ -47,6 +48,11 @@ export default function Home() {
     setFilter({ ...filter, [name]: value });
   }
 
+  const handleSendForm = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    fetchInvoices();
+  }
+
   async function fetchInvoices() {
     setLoading(true);
     const data = await getInvoices(filter);
@@ -54,9 +60,9 @@ export default function Home() {
     setLoading(false);
   }
 
-  useEffect(() => {
-    fetchInvoices()
-  }, [])
+  // useEffect(() => {
+  //   fetchInvoices()
+  // }, [])
 
   useEffect(() => {
     if (selectedInvoice) {
@@ -75,7 +81,7 @@ export default function Home() {
       <h1>Tela de Invoice</h1>
 
       <section className="card">
-        <form action="" className="formulario">
+        <form onSubmit={(e) => handleSendForm(e as any)} className="formulario">
           <div>
             <label htmlFor="dateStart">Data de</label>
             <input type="date" id="dateStart" name="dateStart" onChange={handleFilterChange} />
@@ -84,21 +90,33 @@ export default function Home() {
             <label htmlFor="dateEnd">Data Até</label>
             <input type="date" id="dateEnd" name="dateEnd" onChange={handleFilterChange} />
           </div>
-          <div></div>
+          <div>
+            <label htmlFor="pedido">Pedido/IDE</label>
+            <input type="text" id="pedido" name="pedido" onChange={handleFilterChange} />
+          </div>
 
           <button
             type="button"
-            onClick={(e) => {
-              e.preventDefault();
-              fetchInvoices();
-            }}
+            onClick={(e) => handleSendForm(e as any)}
           >
             Pesquisar
           </button>
         </form>
       </section>
 
-      {loading ? <LoadingSpinner /> :
+      {(!filter.dateStart && !filter.dateEnd && !filter.pedido) && (
+        <div>
+          <p>Preencher filtros para buscar invoices</p>
+        </div>
+      )}
+
+      {loading && (
+        <div className="loading">
+          <LoadingSpinner />
+        </div>
+      )}
+
+      {invoices.length > 0 && !loading && (
         <table className="grupotristao">
           <thead>
             <tr>
@@ -133,7 +151,7 @@ export default function Home() {
             ))}
           </tbody>
         </table>
-      }
+      )}
 
       {selectedInvoice && (
         <Modal isOpen={isModalOpen} closeModal={closeModal} title={"Invoice Selecionada"}>
