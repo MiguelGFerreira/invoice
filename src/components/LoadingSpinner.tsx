@@ -1,12 +1,13 @@
 import React from "react";
 import Image from "next/image";
-import spinner from '@/../public/images/spinner.png'
+// import spinner from '@/../public/images/spinner.png'
+import tristao from '@/../public/images/tristao_verde_musgo.png'
 
 const LoadingSpinner = () => {
 	return (
 		<div role="status" className="w-full flex justify-center">
 			<Image
-				src={spinner}
+				src={tristao}
 				alt={"loading_spinner"}
 				width={60}
 				height={60}

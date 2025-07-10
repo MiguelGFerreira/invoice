@@ -104,7 +104,7 @@ export default function Home() {
         </form>
       </section>
 
-      {(!filter.dateStart && !filter.dateEnd && !filter.pedido) && (
+      {(!filter.dateStart && !filter.dateEnd && !filter.pedido || invoices.length === 0 && !loading) && (
         <div>
           <p>Preencher filtros para buscar invoices</p>
         </div>
