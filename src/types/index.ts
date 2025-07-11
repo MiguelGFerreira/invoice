@@ -45,7 +45,7 @@ export interface Invoice {
 	OIC: string,
 	COND_PAG: string,
 	DESCRIPTION: string,
-	PRECO_FORMATADO: string,
+	PRECO_FORMATADO: number,
 	QUALIDADE: string,
 	MARCACOES: string,
 	MARCACOES2: string,

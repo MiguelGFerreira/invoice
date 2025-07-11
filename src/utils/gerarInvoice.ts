@@ -16,6 +16,7 @@ export const gerarInvoice = async (data: Invoice, showRFAText: boolean, invoiceD
   const singature = await getBase64ImageFromURL("@/../public/images/assinatura.png");
   const cnpj = data.FILIAL == 21 ? "27001247/0030-13" : "27001247/0037-90"
   const valorFormatado = new Intl.NumberFormat('pt-BR', { minimumFractionDigits: 2 }).format(data.VALOR_INVOICE)
+  const precoFormatado = new Intl.NumberFormat('pt-BR', { minimumFractionDigits: 2 }).format(data.PRECO_FORMATADO)
   const pesoBrutoFormatado = new Intl.NumberFormat('pt-BR', { minimumFractionDigits: 2 }).format(data.PESO_BRUTO)
   const pesoLiquidoFormatado = new Intl.NumberFormat('pt-BR', { minimumFractionDigits: 2 }).format(data.PESO_LIQUIDO)
   const pesoLiquidoSacasFormatado = new Intl.NumberFormat('pt-BR', { minimumFractionDigits: 2 }).format(data.PESO_LIQUIDO / 1000)
@@ -253,7 +254,7 @@ export const gerarInvoice = async (data: Invoice, showRFAText: boolean, invoiceD
             [
               {},
               { text: pesoLiquidoSacasFormatado, alignment: 'center' },
-              { text: `${data.PRECO_FORMATADO} ${data.COND_PAG}`, alignment: 'center' },
+              { text: `${precoFormatado} ${data.COND_PAG}`, alignment: 'center' },
               { text: valorFormatado, alignment: 'center', border: [false, false, true, false] }, // borda direita
             ],
             [

@@ -35,7 +35,7 @@ export default function Home() {
     if (!selected) return;
 
     setSelectedInvoice(selected);
-    setIsModalOpen(true);
+    //setIsModalOpen(true);
   }
 
   const closeModal = () => {
@@ -72,6 +72,7 @@ export default function Home() {
         { unity: 'USD/Mton', price: selectedInvoice.PRECO_TONELADAS },
         { unity: 'USD/50KG', price: selectedInvoice.PRECO_50KG }
       ]);
+      setIsModalOpen(true)
       //setSelectedInvoice({ ...selectedInvoice, PRECO_FORMATADO: `${selectedInvoice.PRECO_60KG}` })
     }
   }, [selectedInvoice])
@@ -172,7 +173,7 @@ export default function Home() {
                   setSelectedInvoice({
                     ...selectedInvoice,
                     COND_PAG: selectedPrice.unity,
-                    PRECO_FORMATADO: String(selectedPrice.price),
+                    PRECO_FORMATADO: selectedPrice.price,
                   })
                 }
               }}
@@ -187,7 +188,7 @@ export default function Home() {
                   <div className="flex w-full items-center justify-between">
                     <div className="text-sm/6">
                       <p className="group-data-[checked]:text-white">{price.unity}</p>
-                      <input className="text-black/70" type="text" defaultValue={price.price} onChange={(desc) => setSelectedInvoice({ ...selectedInvoice, PRECO_FORMATADO: desc.target.value })} />
+                      <input className="text-black/70" type="text" defaultValue={price.price} onChange={(desc) => setSelectedInvoice({ ...selectedInvoice, PRECO_FORMATADO: Number(desc.target.value.replace(',','.')) })} />
                     </div>
                     <CheckCircleIcon className="size-6 absolute top-4 right-4 fill-white opacity-0 transition group-data-[checked]:opacity-100" />
                   </div>
