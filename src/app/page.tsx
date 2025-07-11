@@ -33,6 +33,7 @@ export default function Home() {
   const handleOpenModal = (invoiceId: number) => {
     const selected = invoices.find((inv) => inv.ID === invoiceId)
     if (!selected) return;
+    console.log(selected);
 
     setSelectedInvoice(selected);
     //setIsModalOpen(true);
