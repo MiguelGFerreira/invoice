@@ -69,17 +69,17 @@ export const gerarInvoice = async (data: Invoice, showRFAText: boolean, invoiceD
   }
 
   // Garante que data.OIC seja string (ou string vazia)
-  const rawOIC = typeof data.OIC === 'string' ? data.OIC : '';
+  const rawOIC = typeof data.MARCACOES === 'string' ? data.MARCACOES : '';
 
   // Separa por vírgula, faz trim, remove itens vazios, deduplica e junta de novo
   const oicsFinal = Array.from(
     new Set(
       rawOIC
-        .split(',')
+        .split(' ')
         .map(oic => oic.trim())
         .filter(oic => oic.length > 0)
     )
-  ).join(', ');
+  ).join('\n');
   //console.log(oicsFinal);
 
   const docDefinition = {
@@ -328,7 +328,7 @@ export const gerarInvoice = async (data: Invoice, showRFAText: boolean, invoiceD
                 stack: [
                   { text: data.MARCACOES2, alignment: 'center' },
                   // { text: oicsFinal, alignment: 'center' },
-                  { text: data.MARCACOES, alignment: 'center' },
+                  { text: oicsFinal, alignment: 'center' },
                 ],
                 border: [true, false, true, true],  // bordas esquerda, direita e inferior
               },
