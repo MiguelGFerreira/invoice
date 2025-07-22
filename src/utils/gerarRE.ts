@@ -111,7 +111,7 @@ export const gerarRE = async (data: Invoice) => {
                 stack: [
                   { text: data.MARCACOES2 },
                   { text: data.MARCACOES },
-                  { text: `${getAlchemyText()} a ${data.PESO_LIQUIDO/60} sacas de 60kg` }
+                  { text: `${getAlchemyText()} a ${Math.floor(data.PESO_LIQUIDO/60)} sacas de 60kg` }
                 ],
                 style: 'label'
               }
