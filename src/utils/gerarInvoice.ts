@@ -59,13 +59,15 @@ export const gerarInvoice = async (data: Invoice, showRFAText: boolean, invoiceD
     return `${data.QTD_EMB}\nSCS\nIN\nJUTE`
     */
 
+    const sacasBulk = data.PESO_LIQUIDO / 60;
+
     // agora bonito
     const embalagensMap: Record<string, string> = {
-      BULK: `${data.SACAS}\nIN BULK`,
+      BULK: `${sacasBulk}\nIN BULK`,
       "BIG BAG": `${data.QTD_EMB}\nBIG BAGS`
     }
 
-    return embalagensMap[data.EMBALAGEM] || `${data.SACAS}\nIN JUTE` // vai olhar no hashmap se existe a embalagem la. Se nao existir, vai retornar os dados em sacas in jute
+    return embalagensMap[data.EMBALAGEM] || `${data.QTD_EMB}\nIN JUTE` // vai olhar no hashmap se existe a embalagem la. Se nao existir, vai retornar os dados em sacas in jute
   }
 
   // Garante que data.OIC seja string (ou string vazia)
